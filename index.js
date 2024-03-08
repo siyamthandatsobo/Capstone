@@ -22,45 +22,84 @@ app.use(express.json()) //newer version comes with body parser
 app.use(cookieparser())
 app.use(express.static('views')) 
 
-app.use('/order',orderRouter) 
-
-
-app.use('/products',productRouter) 
+// app.use(authenticate);
+app.use('/order',authenticate, orderRouter);
+app.use('/products', productRouter);
 
 
 
 const auth = async (req, res, next) => {
-    const { emailAdd, userPass } = req.body;
-    const hashedPassword = await checkUser(emailAdd);
-    bcrypt.compare(userPass, hashedPassword, (err, result) => {
-        if (err) throw err;
-        if (result === true) {
-            const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    try {
+        const { emailAdd, userPass } = req.body;
+        const userInfo = await checkUser(emailAdd);
+
+        if (!userInfo) {
+            return res.status(401).json({
+                msg: 'User not found or invalid credentials',
+            });
+        }
+
+        const result = await bcrypt.compare(userPass, userInfo.userPass);
+
+        if (result) {
+            const tokenPayload = {
+                emailAdd: emailAdd,
+                userID: userInfo.userID, // Include userID in the token payload
+            };
+
+            const token = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '2h' });
             console.log(token);
             res.cookie('jwt', token);
             res.json({
-                msg: 'you have logged in',
+                msg: 'You have logged in',
+                user: userInfo,
                 token: token,
             });
         } else {
-            res.send({
-                msg: 'the password does not match',
+            res.status(401).json({
+                msg: 'Invalid credentials',
             });
-            next(); // Move next() here
         }
-    });
+    } catch (error) {
+        console.error('Authentication error:', error);
+        res.status(500).json({
+            msg: 'Internal server error during authentication',
+        });
+    }
 };
 
-app.use('/users', userRouter);
-app.post('/login', auth, (req, res) => {
+
+
+
+app.use('/users',authenticate, userRouter);
+app.post('/login', auth, async (req, res) => {
     const { emailAdd } = req.body;
     const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
-    res.cookie('jwt', token);
-    res.json({
-        msg: 'you have logged in',
-    });
+
+    try {
+        const userInfo = await checkUser(emailAdd);
+
+        if (userInfo) {
+            res.cookie('jwt', token);
+            res.json({
+                msg: 'you have logged in',
+                user: userInfo,
+                token: token,
+            });
+        } else {
+            res.status(404).json({
+                msg: 'User not found',
+            });
+        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        res.status(500).json({
+            msg: 'Internal server error during login',
+        });
+    }
 });
-   
+
+
 
 
 

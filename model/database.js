@@ -22,7 +22,7 @@ const pool = mysql.createPool({
    
 }
 const getProduct=async(prodID)=> {
-    console.log(prodID);
+    // console.log(prodID);
     const [result]=await pool.query(`
     SELECT * FROM products
     WHERE prodID = ?`,[prodID])
@@ -50,7 +50,7 @@ WHERE (prodID=?)`,[prodName , quantity ,amount ,category,details ,prodUrl,prodID
     return edited
 }
 
-console.log(await getProduct(1))
+// console.log(await getProduct(1))
 const getUsers=async()=>{
     //use destructuring to return the first array by putting square brackets around result
     const [result] =await pool.query(`
@@ -74,12 +74,16 @@ INSERT INTO users (firstName , lastName ,gender ,userRole,emailAdd,userPass ,use
 VALUES (?,?,?,?,?,?,?)`,[firstName , lastName ,gender ,userRole,emailAdd,userPass ,userProfile])
 return getUser(user.insertId)
 }
-const checkUser = async(emailAdd)=>{
-    const [[{userPass}]]=await pool.query(`
-    SELECT userPass FROM users WHERE emailAdd = ? 
-    `,[emailAdd])
-    return userPass
-} 
+const checkUser = async (emailAdd) => {
+    const [userResult] = await pool.query(`
+        SELECT userID, firstName, lastName, userPass
+        FROM users
+        WHERE emailAdd = ?
+    `, [emailAdd]);
+
+    return userResult.length > 0 ? userResult[0] : null;
+};
+console.log(await checkUser('siya@gmail.com'))
 const deleteUser = async(userID)=>{
 const [deleted]=await pool.query(`
 DELETE FROM users where userID = ?
@@ -121,7 +125,6 @@ const getOrdersByUserID = async (userID) => {
 
     return result;
 };
-//console.log(await(getOrder(2)))
 
 const deleteOrder = async (orderID) => {
     const [deletedOrder] = await pool.query(`
@@ -129,7 +132,7 @@ const deleteOrder = async (orderID) => {
       WHERE orderID = ?
     `, [orderID]);
     return deletedOrder;
-  };
+};
     const editOrderQuantity = async(quantity)=>{
         const [edited]=await pool.query(`
         UPDATE products
@@ -138,16 +141,19 @@ const deleteOrder = async (orderID) => {
         return edited
     }
     const addOrder = async (quantity, userID, prodID) => {
+        console.log('userID:', userID);
         const [order] = await pool.query(`
-        INSERT INTO cart (quantity, userID, prodID, totalPrice)
-        VALUES (?, ?, ?, quantity * (SELECT amount FROM products WHERE prodID = ?))
-        ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), totalPrice = quantity * (SELECT amount FROM products WHERE prodID = ?)
-        `,
-          [quantity, userID, prodID, prodID]);
-      
+            INSERT INTO cart (quantity, userID, prodID, totalPrice)
+            VALUES (?, ?, ?, quantity * (SELECT amount FROM products WHERE prodID = ?))
+            ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), totalPrice = quantity * (SELECT amount FROM products WHERE prodID = ?)
+            `,
+            [quantity, userID, prodID, prodID, prodID]);
+              
         return getOrder(order.insertId);
-      };
-        
+    };
+ 
+      
+    //    console.log(await(addOrder(3,9,2)))
 export {getUsers,getUser,addUser,editUser,deleteUser,checkUser}
 export {getProducts,getProduct,addProduct,editProduct,deleteProduct}
 export {getOrder,getOrdersByUserID,deleteOrder,editOrderQuantity,addOrder}
