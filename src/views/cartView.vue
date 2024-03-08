@@ -6,14 +6,18 @@
       <thead>
         <tr>
           <th>Product</th>
+          <th>Product Name</th>
           <th>Quantity</th>
+          <th>User ID</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="cartItem in cart" :key="cartItem.orderID">
+          <td>{{ cartItem.prodID }}</td>
           <td>{{ getProductDetails(cartItem.prodID).prodName }}</td>
           <td>{{ cartItem.quantity }}</td>
+          <td>{{ cartItem.userID }}</td>
           <td>
             <button @click="removeFromCart(cartItem.orderID)">Remove</button>
           </td>
@@ -29,13 +33,11 @@ export default {
     cart() {
       return this.$store.state.cart;
     },
-    getProductDetails() {
-      return (prodID) => {
-        return this.$store.state.products.find((product) => product.prodID === prodID);
-      };
-    },
   },
   methods: {
+    getProductDetails(prodID) {
+      return this.$store.state.Products.find((product) => product.prodID === prodID) || {};
+    },
     removeFromCart(orderID) {
       this.$store.dispatch('removeProductFromCart', orderID);
     },

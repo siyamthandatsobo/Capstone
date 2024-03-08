@@ -17,7 +17,8 @@ export default {
   },
   methods: {
     addToCart(product) {
-      this.$store.dispatch('addProductToCart', product)
+      console.log(product);
+      this.$store.dispatch('addProductToCart', product);
     },
   },
   mounted() {

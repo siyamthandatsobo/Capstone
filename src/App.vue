@@ -3,9 +3,9 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/products">Products</router-link> |
     <router-link to="/cart">Cart</router-link> |
-    <router-link v-if="!$cookies.get('jwt')" to="/login">Login</router-link>
+    <router-link v-if="!$store.state.loggedIn" to="/login">Login</router-link>
   </nav>
-  <button v-if="$cookies.get('jwt')" @click="logout">Logout</button>
+  <button v-if="$store.state.loggedIn" @click="logout">Logout</button>
 
   <router-view/>
 </template>
