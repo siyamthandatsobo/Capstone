@@ -83,7 +83,7 @@ const checkUser = async (emailAdd) => {
 
     return userResult.length > 0 ? userResult[0] : null;
 };
-console.log(await checkUser('siya@gmail.com'))
+// console.log(await checkUser('siya@gmail.com'))
 const deleteUser = async(userID)=>{
 const [deleted]=await pool.query(`
 DELETE FROM users where userID = ?
@@ -118,13 +118,22 @@ const getOrder=async(orderID)=> {
 return result
 }
 const getOrdersByUserID = async (userID) => {
-    const [result] = await pool.query(`
-        SELECT * FROM cart
-        WHERE userID = ?
-    `, [userID]);
+    try {
+        const [result] = await pool.query(`
+            SELECT cart.*, products.* 
+            FROM cart
+            JOIN products ON cart.prodID = products.prodID
+            WHERE cart.userID = ?
+        `, [userID]);
 
-    return result;
+        return result;
+    } catch (error) {
+        console.error('Error executing query:', error.message);
+        throw error;
+    }
 };
+ console.log(await getOrdersByUserID(10))
+
 
 const deleteOrder = async (orderID) => {
     const [deletedOrder] = await pool.query(`
@@ -141,16 +150,32 @@ const deleteOrder = async (orderID) => {
         return edited
     }
     const addOrder = async (quantity, userID, prodID) => {
-        console.log('userID:', userID);
-        const [order] = await pool.query(`
-            INSERT INTO cart (quantity, userID, prodID, totalPrice)
-            VALUES (?, ?, ?, quantity * (SELECT amount FROM products WHERE prodID = ?))
-            ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), totalPrice = quantity * (SELECT amount FROM products WHERE prodID = ?)
-            `,
-            [quantity, userID, prodID, prodID, prodID]);
-              
-        return getOrder(order.insertId);
-    };
+        try {
+            // Fetch the product price
+            const [product] = await pool.query(`
+                SELECT amount FROM products WHERE prodID = ?
+            `, [prodID]);
+    
+            if (!product || !product.length) {
+                throw new Error('Product not found');
+            }
+    
+            const productPrice = product[0].amount;
+            const totalPrice = quantity * productPrice;
+    
+            // Insert the order into the cart table
+            const [order] = await pool.query(`
+                INSERT INTO cart (quantity, userID, prodID, totalPrice)
+                VALUES (?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), totalPrice = quantity * ?
+            `, [quantity, userID, prodID, totalPrice, quantity, productPrice]);
+    
+            return getOrder(order.insertId);
+        } catch (error) {
+            console.error('Error adding order:', error.message);
+            throw error;
+        }
+    }
  
       
     //    console.log(await(addOrder(3,9,2)))
