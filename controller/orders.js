@@ -18,7 +18,7 @@ export default{
     
           jwt.verify(token, process.env.SECRET_KEY, async (err, decodedToken) => {
             if (err) {
-              console.error('JWT Verification Error:', err);
+              console.error('JWT Verification Error look for it:', err);
               console.error('Token content:', token);
               return res.sendStatus(403);
             }
