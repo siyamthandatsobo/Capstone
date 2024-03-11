@@ -10,7 +10,7 @@ router
         .post(controller.postOrder)
 
 router
-        .route('/:orderID')
+        .route('/:prodID')
             .delete(controller.deleteOrder)
             .patch(controller.editOrder)
     

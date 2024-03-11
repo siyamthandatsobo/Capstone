@@ -63,9 +63,9 @@ getOrdersByUser: async (req, res) => {
     res.json(orders);
 },
 deleteOrder: async (req, res) => {
-    const orderID = req.params.orderID;
-    res.send(await deleteOrder(orderID));
-    console.log('Deleting order with ID:', orderID);
+    const prodID = req.params.prodID;
+    res.send(await deleteOrder(prodID));
+    console.log('Deleting order with ID:', prodID);
   },
     editOrder:async(req,res)=>{
         console.log(+req.params.orderID);

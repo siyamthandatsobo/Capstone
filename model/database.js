@@ -135,13 +135,14 @@ const getOrdersByUserID = async (userID) => {
  console.log(await getOrdersByUserID(10))
 
 
-const deleteOrder = async (orderID) => {
+const deleteOrder = async (prodID) => {
     const [deletedOrder] = await pool.query(`
       DELETE FROM cart
-      WHERE orderID = ?
-    `, [orderID]);
+      WHERE prodID = ?
+    `, [prodID]);
     return deletedOrder;
 };
+// console.log(await deleteOrder(4))
     const editOrderQuantity = async(quantity)=>{
         const [edited]=await pool.query(`
         UPDATE products
