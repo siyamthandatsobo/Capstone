@@ -1,48 +1,46 @@
+// Import necessary libraries and dependencies
 import { createStore } from 'vuex';
 import axios from 'axios';
-import  VueCookies  from 'vue-cookies';
+import VueCookies from 'vue-cookies'; // Import VueCookies library
 import router from '@/router';
+
+// Set up Axios configurations
 axios.defaults.withCredentials = true;
 const baseUrl = 'http://localhost:9000';
 
+// Create and export the Vuex store
 export default createStore({
+  // Define the store's initial state
   state: {
-    Products: [],
-    cart: VueCookies.get('userCart') || [], // Load cart data from cookie or initialize as empty array
-    user: [], 
-    loggedIn: false, // Assuming you have a loggedIn state
+    Products: [], // Array to store products
+    cart: [], // Array to store cart data
+    user: [], // Array to store user information
+    loggedIn: false, // Flag indicating if the user is logged in
   },
+  // Define getters for accessing state properties
   getters: {
     // Add any getters if needed
   },
+  // Define mutations to update state
   mutations: {
+    // Mutation to set the product data
     setProducts(state, payload) {
       state.Products = payload;
     },
-    addToCart(state, product) {
-      // Check if the product already exists in the cart
-      const existingProductIndex = state.cart.findIndex(
-        (item) => item.prodID === product.prodID
-      );
-    
-      if (existingProductIndex !== -1) {
-        // Product already exists, update the quantity
-        state.cart[existingProductIndex].quantity += product.quantity;
-      } else {
-        // Product doesn't exist, add it to the cart
-        state.cart.push(product);
-      }
-    
-      // Update the userCart cookie
-      VueCookies.set('userCart', JSON.stringify(state.cart), '7d');
+    // Mutation to set the cart data
+    setCart(state, cartData) {
+      state.cart = cartData;
     },
+    // Mutation to set user information and update login status
     setUser(state, user) {
       state.user = user;
       state.loggedIn = true;
     },
     // Add other mutations if needed
   },
+  // Define actions to perform asynchronous tasks and update state through mutations
   actions: {
+    // Action to get products from the server and commit mutation to set the product data
     async getProducts({ commit }) {
       try {
         const { data } = await axios.get(`${baseUrl}/products`);
@@ -51,6 +49,7 @@ export default createStore({
         console.error('Error getting products:', error);
       }
     },
+    // Action to add a new product and reload the page
     async addProduct({ commit }, newproduct) {
       try {
         const { data } = await axios.post(`${baseUrl}/products`, newproduct);
@@ -60,6 +59,7 @@ export default createStore({
         console.error('Error adding product:', error);
       }
     },
+    // Action to delete a product and reload the page
     async deleteProduct({ commit }, prodID) {
       try {
         await axios.delete(`${baseUrl}/products/${prodID}`);
@@ -68,45 +68,48 @@ export default createStore({
         console.error('Error deleting product:', error);
       }
     },
-    async addProductToCart({ commit, state }, product) {
+    // Action to add a product to the cart and update the cart data
+    async addProductToCart({ commit, state }, { prodID, quantity }) {
       try {
         // Check if the user is logged in
         if (!state.loggedIn) {
           console.error('User not logged in');
           return;
         }
-    
-        // Send the request to add the product to the cart
-        const { data } = await axios.post(`${baseUrl}/order`, {
-          prodID: product.prodID,
-          userID: state.user.userID,
-        });
-    
-        // Assuming that the response data is the updated cart, modify this part if needed
-        const updatedCart = data;
-    
-        // Find the product details from the Products array based on the prodID
-        const productDetails = state.Products.find((p) => p.prodID === product.prodID);
-    
-        // Create a new object containing both the product details and the quantity
-        const productInCart = {
-          ...productDetails,
-          quantity: updatedCart.length > 0 ? updatedCart[0].quantity : 0, // Modify this if the response data structure is different
-          userID: state.user.userID, // Include userID in the cart information
-        };
-    
-        // Update the cart in the store
-        commit('addToCart', productInCart);
-    
-        // Log success or handle other logic as needed
-        console.log('Product added to cart successfully:', productInCart);
+
+        // Get the user's token from local storage
+        const token = localStorage.getItem('jwt');
+
+        // Send the request to add the product to the cart with the quantity
+        await axios.post(
+          `${baseUrl}/order`,
+          { prodID, userID: state.user.userID, quantity },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        // Fetch the updated cart and commit mutation to set the cart data
+        const { data: updatedCart } = await axios.get(`${baseUrl}/order/user`);
+        commit('setCart', updatedCart);
+
+        // ... rest of the code ...
       } catch (error) {
         console.error('Error adding product to cart:', error.message);
         console.error('Error details:', error.response);
       }
     },
-    
-    
+    async deleteProdFromCart({ commit }, prodID) {
+      try {
+        await axios.delete(`${baseUrl}/order/${prodID}`);
+        // window.location.reload();
+      } catch (error) {
+        console.error('Error deleting product:', error);
+      }
+    },
+    // Action to edit a product and reload the page
     async editProduct({ commit }, update) {
       try {
         await axios.patch(`${baseUrl}/products/${update.prodID}`, update);
@@ -115,19 +118,20 @@ export default createStore({
         console.error('Error editing product:', error);
       }
     },
+    // Action to handle user login
     async login(context, userLogin) {
       try {
         let { data } = await axios.post(baseUrl + '/login', userLogin);
-    
+
         // Extract user information and token from the response
         const { user, token } = data;
-    
+
         // Set the user and loggedIn state in the store
         context.commit('setUser', user);
-    
-        // Set the token in the cookie (if needed)
-        // VueCookies.set('jwt', token);
-    
+
+        // Set the token in local storage (if needed)
+        localStorage.setItem('jwt', token);
+
         // Alert and navigate to the home page
         alert('You have logged in');
         await router.push('/');
@@ -136,12 +140,16 @@ export default createStore({
         console.error('Error logging in:', error);
       }
     },
+    // Action to handle user logout
     async logout(context) {
       try {
-        let cookies = VueCookies.keys();
-        console.log(cookies);
-        VueCookies.remove('jwt');
-        window.location.reload();
+        // Remove the token from local storage
+        localStorage.removeItem('jwt');
+
+        // Reload the page
+        // window.location.reload();
+
+        // Send a request to log out on the server
         let { data } = await axios.delete(baseUrl + '/logout');
         alert(data.msg);
       } catch (error) {
