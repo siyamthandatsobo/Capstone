@@ -6,6 +6,10 @@ export default{
         try {
           const { quantity, prodID } = req.body;
     
+          // Log the received values
+          console.log('Received quantity:', quantity);
+          console.log('Received prodID:', prodID);
+    
           // Retrieve the token from the cookie
           const token = req.cookies.jwt; // Assuming 'jwt' is the name of your cookie
     
@@ -18,7 +22,7 @@ export default{
     
           jwt.verify(token, process.env.SECRET_KEY, async (err, decodedToken) => {
             if (err) {
-              console.error('JWT Verification Error look for it:', err);
+              console.error('JWT Verification Error:', err);
               console.error('Token content:', token);
               return res.sendStatus(403);
             }
@@ -32,8 +36,14 @@ export default{
             // Use the extracted userID as needed
             const userID = decodedToken.userID;
     
+            // Log the userID
+            console.log('Decoded userID:', userID);
+    
             // Send the request to add the product to the cart
             const post = await addOrder(quantity, userID, prodID);
+    
+            // Log the response
+            console.log('Response from addOrder:', post);
     
             // Respond with the updated order
             res.send(await getOrder());

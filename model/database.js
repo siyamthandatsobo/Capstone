@@ -160,15 +160,21 @@ const deleteOrder = async (orderID) => {
                 throw new Error('Product not found');
             }
     
-            const productPrice = product[0].amount;
+            // Parse the amount as a float
+            const productPrice = parseFloat(product[0].amount);
+    
+            if (isNaN(productPrice)) {
+                throw new Error('Invalid product price');
+            }
+    
             const totalPrice = quantity * productPrice;
     
             // Insert the order into the cart table
             const [order] = await pool.query(`
                 INSERT INTO cart (quantity, userID, prodID, totalPrice)
                 VALUES (?, ?, ?, ?)
-                ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), totalPrice = quantity * ?
-            `, [quantity, userID, prodID, totalPrice, quantity, productPrice]);
+                ON DUPLICATE KEY UPDATE quantity = VALUES(quantity), totalPrice = VALUES(totalPrice)
+            `, [quantity, userID, prodID, totalPrice]);
     
             return getOrder(order.insertId);
         } catch (error) {
@@ -176,9 +182,10 @@ const deleteOrder = async (orderID) => {
             throw error;
         }
     }
+    
  
       
-    //    console.log(await(addOrder(3,9,2)))
+    //    console.log(await(addOrder(null,10,4)))
 export {getUsers,getUser,addUser,editUser,deleteUser,checkUser}
 export {getProducts,getProduct,addProduct,editProduct,deleteProduct}
 export {getOrder,getOrdersByUserID,deleteOrder,editOrderQuantity,addOrder}
