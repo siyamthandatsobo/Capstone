@@ -17,7 +17,7 @@
       <button @click="login()">login</button>
     </div>
   </template>
-  <style>
+  <style scoped>
   input{
     border-width: 20px;
     border-color:rgb(50, 50, 205);

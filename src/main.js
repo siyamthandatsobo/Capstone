@@ -4,9 +4,17 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import VueCookies from 'vue-cookies';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+const app = createApp(App);
 
-// Set the default expiration time for cookies
-VueCookies.config('7d');
+// Set up the app instance
+app.use(store).use(router).use(VueCookies);
 
-createApp(App).use(store).use(router).use(VueCookies).mount('#app');
+// Mount the app
+const vm = app.mount('#app');
 
+// Dispatch the checkCookies action in the created hook
+vm.$options.created = function() {
+  store.dispatch('checkCookies');
+};
