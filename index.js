@@ -71,7 +71,7 @@ const auth = async (req, res, next) => {
 
 
 
-app.use('/users',authenticate, userRouter);
+app.use('/users' ,userRouter);
 app.post('/login', auth, async (req, res) => {
     const { emailAdd } = req.body;
     const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });

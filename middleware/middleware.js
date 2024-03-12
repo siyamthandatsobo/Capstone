@@ -1,22 +1,16 @@
 import jwt from 'jsonwebtoken';
 
 const authenticate = (req, res, next) => {
-    const { cookie } = req.headers;
+    const tokenCookie = req.cookies.jwt;
 
-    if (!cookie) {
-        return res.sendStatus(403);
+    if (!tokenCookie) {
+        return res.status(403).send({ error: 'Missing JWT token in cookies' });
     }
 
-    const tokenInHeader = cookie.split('=')[1];
-
-    if (!tokenInHeader) {
-        return res.sendStatus(403);
-    }
-
-    jwt.verify(tokenInHeader, process.env.SECRET_KEY, (err, user) => {
+    jwt.verify(tokenCookie, process.env.SECRET_KEY, (err, user) => {
         if (err) {
-            console.error('JWT Verification Error:', err);
-            return res.sendStatus(403);
+            console.error('JWT Verification Error:', err.message);
+            return res.status(403).send({ error: 'Failed to authenticate JWT token' });
         }
 
         console.log('Decoded User:', user);
