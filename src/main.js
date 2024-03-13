@@ -8,13 +8,11 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 const app = createApp(App);
 
-// Set up the app instance
 app.use(store).use(router).use(VueCookies);
 
-// Mount the app
-const vm = app.mount('#app');
 
-// Dispatch the checkCookies action in the created hook
-vm.$options.created = function() {
+const check = app.mount('#app');
+
+check.$options.created = function() {
   store.dispatch('checkCookies');
 };

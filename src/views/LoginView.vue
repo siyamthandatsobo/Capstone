@@ -18,28 +18,10 @@
     </div>
   </template>
   <style scoped>
-  input{
-    border-width: 20px;
-    border-color:rgb(50, 50, 205);
-   
-  }
-  button{
-    background-color: rgb(43, 255, 0);
-    color:grey;
-  }
+ 
 </style>
 <script>
-// export default {
-//   computed:{
-//     getFriends(){
-//       this.$store.dispatch('getFriends')
-//     },
 
-//   },
-//   mounted(){
-//     this.getFriends
-//   }
-// }
 export default{
   data() {
 return {

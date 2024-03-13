@@ -1,8 +1,20 @@
 <template>
 
     <div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="userModalTarget">
+            Add User
+</button>
 
-        
+<!-- Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
         <div class="product-inputs container pt-5 styling">
       <h1 class="display-3 text-center">Users</h1>
     <label for="userName">User Name</label>
@@ -31,6 +43,60 @@
     <button class="btn btn-success" @click="updateUser">Update User</button>
     
 </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+        <!-- Button trigger modal -->
+    
+<!-- Modal -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container styling">
+    <h1 class="display-3 text-center">Products</h1>
+    <div class="product-inputs">
+        <label for="prodName">Product Name</label>
+        <input type="text" id="prodName" v-model="payload.prodName" required>
+        
+        <label for="quantity">Product Quantity</label>
+        <input type="number" id="quantity" v-model="payload.quantity" required>
+        
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" v-model="payload.amount" required>
+        
+      <label for="Category">Category</label>
+      <input type="text" id="Category" v-model="payload.Category" required>
+      
+      <label for="prodUrl">Image URL</label>
+      <input type="text" id="prodUrl" v-model="payload.prodUrl" required>
+    </div>
+    <button class="btn btn-success" @click.prevent="addProduct">Add Product</button>
+    <br>
+    <br>
+    <button class="btn btn-success" @click="updateProduct">Update Product</button>
+    
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+        
+       
 
 
 
@@ -69,13 +135,14 @@
                 />
               </td>
               <td>
-                  <img
-    src="https://i.ibb.co/JxK7ptg/product-design.png"
-    alt="Edit"
-    width="30"
-    height="30"
-    @click="editUser(user)"
-   
+    <img
+        src="https://i.ibb.co/JxK7ptg/product-design.png"
+        alt="Edit"
+        width="30"
+        height="30"
+        @click="editUser(user)"
+        data-bs-toggle="modal"
+        :data-bs-target="userModalTarget"
     />
 </td>
             </tr>
@@ -85,31 +152,11 @@
     </div>
 </div>
 
-<div class="container styling">
-    <h1 class="display-3 text-center">Products</h1>
-    <div class="product-inputs">
-        <label for="prodName">Product Name</label>
-        <input type="text" id="prodName" v-model="payload.prodName" required>
-        
-        <label for="quantity">Product Quantity</label>
-        <input type="number" id="quantity" v-model="payload.quantity" required>
-        
-        <label for="amount">Amount</label>
-        <input type="number" id="amount" v-model="payload.amount" required>
-        
-      <label for="Category">Category</label>
-      <input type="text" id="Category" v-model="payload.Category" required>
-      
-      <label for="prodUrl">Image URL</label>
-      <input type="text" id="prodUrl" v-model="payload.prodUrl" required>
-    </div>
-    <button class="btn btn-success" @click.prevent="addProduct">Add Product</button>
-    <br>
-    <br>
-    <button class="btn btn-success" @click="updateProduct">Update Product</button>
-    
-</div>
 
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="productModalTarget">
+            Add Product
+</button>
 
 <div class="container pt-5">
     <div class="table-container ">
@@ -159,7 +206,8 @@
                 
                 width="30"
                 height="30"
-                
+                data-bs-toggle="modal"
+        :data-bs-target="productModalTarget"
                 />
             </td>
           </tr>
@@ -195,7 +243,10 @@ export default {
       userPass: null,
     },
     selectedUser: null,
-    selectedProduct: null
+    selectedProduct: null,
+    userModalTarget: '#userModal',
+    productModalTarget: '#productModal'
+
 
   };
 },
@@ -212,12 +263,14 @@ export default {
         category: this.payload.Category,
         prodUrl: this.payload.prodUrl,
       };
-      this.$store.dispatch("editProduct", edit);
+      this.$store.dispatch("updateProduct", edit);
     },
     editUser(user) {
     this.selectedUser = { ...user };
     
     this.userPayload = { ...this.selectedUser };
+    this.userModalTarget = '#userModal'; // Set the target for the user modal
+
   },
 
   updateUser() {
@@ -238,12 +291,16 @@ export default {
   userRole: null,
   userPass: null
       };
+      this.userModalTarget = ''; // Close the user modal
+
     }
   },
   editProduct(item) {
       this.selectedProduct = { ...item };
 
       this.payload = { ...this.selectedProduct };
+      this.productModalTarget = '#productModal'; // Set the target for the product modal
+
     },
     async updateProduct() {
   if (this.selectedProduct) {
@@ -251,7 +308,7 @@ export default {
       id: this.selectedProduct.prodID,
       data: { ...this.payload },
     };
-    await this.$store.dispatch("updateProduct", updatedProduct);
+    this.$store.dispatch("updateProduct", updatedProduct);
 
     this.selectedProduct = null;
     this.payload = {
@@ -262,20 +319,23 @@ export default {
       Category: null,
       prodUrl: null,
     };
+    this.productModalTarget = ''; // Close the product modal
+
   }
 },
 
     addProduct() {
       console.log("Product URL:", this.payload.prodUrl);
-     
+      this.productModalTarget = '#productModal'; // Set the target for the product modal
+
       this.$store.dispatch("addProduct", this.payload);
     },
     addUser() {
-  this.$store.dispatch("addProduct", this.userPayload);
+  this.$store.dispatch("addUser", this.userPayload);
 },
 
     deleteUser(userID) {
-      this.$store.dispatch("deleteUser", { id: userID });
+      this.$store.dispatch("deleteUser", userID);
     },
   }, 
 

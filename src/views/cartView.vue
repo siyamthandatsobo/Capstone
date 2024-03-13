@@ -65,15 +65,17 @@
 // Inside your CartView component script
 export default {
   computed: {
-    // Use the correct state from Vuex store
     cart() {
       return this.$store.state.cart;
     },
   },
   methods: {
-   remove(prodID){ 
-    this.$store.dispatch('deleteProdFromCart',prodID)
-  }// Add any methods needed for the component
+    remove(prodID) { 
+      this.$store.dispatch('deleteProdFromCart', prodID);
+    },
+  },
+  mounted() {
+    this.$store.dispatch('getOrderItemsByUser'); // Dispatch the renamed action
   },
 };
 </script>

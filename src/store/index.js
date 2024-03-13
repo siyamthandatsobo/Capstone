@@ -26,16 +26,17 @@ export default createStore({
     setProduct(state, value) {
       state.product = value;
     },
-    setCart(state, cartData) {
-      state.cart = cartData;
+    setCart(state, payload) {
+      state.cart = payload;
     },
     setUsers(state, users) {
       state.users = users;
     },
     setUser(state, user) {
       state.user = user;
-      state.loggedIn = true;
+      state.loggedIn = !!user;
     },
+   
     removeFromCart(state, prodID) {
       state.cart = state.cart.filter(item => item.id !== prodID);
     }
@@ -49,6 +50,15 @@ export default createStore({
         console.error('Error getting products:', error);
       }
     },
+    async getOrderItemsByUser({ commit, state }) {
+      try {
+        const { data } = await axios.get(`${baseUrl}/order/user`);
+        commit('setCart', data);
+      } catch (error) {
+        console.error('Error getting order items by user:', error);
+      }
+    },
+  
     async addProduct({ commit }, newproduct) {
       try {
         const { data } = await axios.post(`${baseUrl}/products`, newproduct);
@@ -110,23 +120,39 @@ export default createStore({
         sweet('Error', 'Failed to remove product from cart', 'error');
       }
     },
-    async editProduct({ commit }, update) {
+    async updateProduct(context, payload) {
       try {
-        await axios.patch(`${baseUrl}/products/${update.prodID}`, update);
-        sweet('Success', 'Product edited successfully!', 'success');
-        window.location.reload();
-      } catch (error) {
-        console.error('Error editing product:', error);
-        sweet('Error', 'Failed to edit product', 'error');
+        let response = await axios.patch(`${baseUrl}/products/${payload.id}`, payload.data);
+    console.log(response)
+        let { data } = response; // Updated to use data
+    console.log(data)
+        if (data.msg) {
+          context.dispatch('getProductById');
+          sweet({
+            title: 'Update Product',
+            text: data.msg,
+            icon: 'success',
+            timer: 2000,
+            
+          });
+          window.location.reload();
+    
+        }
+      } catch (e) {
+        sweet({
+          title: 'Error',
+          text: 'An error occurred when updating a product.',
+          icon: 'error',
+          timer: 2000,
+        });
       }
     },
     async login(context, userLogin) {
       try {
         let { data } = await axios.post(baseUrl + '/login', userLogin);
-        const { user, token } = data;
+        const { user } = data;
 
-        // Save user information and token in cookies
-        VueCookies.set('jwt', token);
+        // Save user information in cookies
         VueCookies.set('user', JSON.stringify(user));
 
         context.commit('setUser', user);
@@ -137,6 +163,7 @@ export default createStore({
         sweet('Error', 'Failed to log in', 'error');
       }
     },
+    
     checkCookies({ commit }) {
       const token = VueCookies.get('jwt');
       const userString = VueCookies.get('user');
@@ -148,12 +175,14 @@ export default createStore({
   
     async logout(context) {
       try {
-        VueCookies.remove('jwt');
         VueCookies.remove('user');
         context.commit('setUser', null);
+        VueCookies.remove('jwt');
+
         sweet('Success', 'Logout successful!', 'success');
-        await router.push('/');
         window.location.reload();
+        await router.push('/');
+       
 
       } catch (error) {
         console.error('Error logging out:', error);
@@ -180,9 +209,10 @@ async fetchUsers({ commit }) {
 },
 async updateUser(context, payload) {
   try {
-    let response = await axios.patch(`${baseUrl}users/${payload.id}`, payload.data);
+    let response = await axios.patch(`${baseUrl}/users/${payload.id}`, payload.data);
+console.log(response)
     let { data } = response; // Updated to use data
-
+console.log(data)
     if (data.msg) {
       context.dispatch('fetchUsers');
       sweet({
@@ -190,7 +220,10 @@ async updateUser(context, payload) {
         text: data.msg,
         icon: 'success',
         timer: 2000,
+        
       });
+      window.location.reload();
+
     }
   } catch (e) {
     sweet({
@@ -201,14 +234,25 @@ async updateUser(context, payload) {
     });
   }
 },
-async deleteUser({ commit }, id) {
+async deleteUser({ commit }, userID) {
   try {
-    await axios.delete(`${baseUrl}/users/${id}`);
+    await axios.delete(`${baseUrl}/users/${userID}`);
     sweet('Success', 'User deleted successfully!', 'success');
     window.location.reload();
   } catch (error) {
     console.error('Error deleting user:', error);
     sweet('Error', 'Failed to delete user', 'error');
+  }
+},
+async addUser({ commit }, newuser) {
+  try {
+    const { data } = await axios.post(`${baseUrl}/users`, newuser);
+    commit('setUsers', data);
+    sweet('Success', 'User added successfully!', 'success');
+    window.location.reload();
+  } catch (error) {
+    console.error('Error adding User:', error);
+    sweet('Error', 'Failed to add User', 'error');
   }
 }
   },
