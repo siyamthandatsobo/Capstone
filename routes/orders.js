@@ -6,15 +6,17 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(authenticate, controller.getOrder)
-        .post(controller.postOrder)
-
-router
-        .route('/:prodID')
-            .delete(controller.deleteOrder)
-            .patch(controller.editOrder)
+    .get(authenticate,controller.getOrder)
+    // .get(authenticate, controller.getOrder)
+    .post(controller.postOrder)
     
-router
-        .route('/user')
-            .get(authenticate, controller.getOrdersByUser);
-export default router
+    router
+    .route('/:prodID')
+    .delete(controller.deleteOrder)
+    .patch(controller.editOrder)
+    
+    router
+    .route('/user')
+    .get(authenticate, controller.getOrdersByUser)
+        
+        export default router

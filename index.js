@@ -23,7 +23,7 @@ app.use(cookieparser())
 app.use(express.static('views')) 
 
 // app.use(authenticate);
-app.use('/order',authenticate, orderRouter);
+app.use('/order', orderRouter);
 app.use('/products', productRouter);
 
 

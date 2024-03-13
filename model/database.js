@@ -151,6 +151,7 @@ const deleteOrder = async (prodID) => {
         return edited
     }
     const addOrder = async (quantity, userID, prodID) => {
+        
         try {
             // Fetch the product price
             const [product] = await pool.query(`
@@ -186,7 +187,7 @@ const deleteOrder = async (prodID) => {
     
  
       
-    //    console.log(await(addOrder(null,10,4)))
+    //    console.log(await(getOrdersByUserID(13)))
 export {getUsers,getUser,addUser,editUser,deleteUser,checkUser}
 export {getProducts,getProduct,addProduct,editProduct,deleteProduct}
 export {getOrder,getOrdersByUserID,deleteOrder,editOrderQuantity,addOrder}
