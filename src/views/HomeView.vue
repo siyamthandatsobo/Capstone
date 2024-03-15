@@ -2,9 +2,9 @@
   <div>
 
     <div class="modals">
-      <button class=" btn custom-button">Free delivery</button>
-      <button class=" btn custom-button login">Login</button>
-      <button class=" btn custom-button">Manage cookies</button>
+      <button class="  custom-button">Free delivery</button>
+      <button class="  custom-button login">Login/Signup</button>
+      <button class="  custom-button">Manage cookies</button>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
@@ -43,27 +43,29 @@
         </form>
 
         <!-- Cart icon -->
-        <a class="nav-link" href="">
+        <a class="nav-link" href="../views/cartView.vue">
           <i class="bi bi-cart"><img src="https://i.ibb.co/SsH8Sbs/icons8-shopping-bag.gif"  alt="Royal Footwear" width="50" height="50">
 </i>
         </a>
       </div>
     </div>
   </nav>
-  <div class="viewport" style="background-color: darkgray;">
+  <div class="viewport">
+<div class="container">
 
-    <div class="row container container-fluid "  >
-      <div class="col-8 my-3">
+  <div class="row"  >
+    <div class="col  viewpimage">
         <p class="text">Royal Footwear New 415 Air MAX NONTENDO </p>
 
-        <br>
         <button class=" btn text-white bg-dark">Check Out More</button>
+      
       </div>
-      <div class="col-4">
-        <img class="img-fluid" src="https://i.ibb.co/rQKJmYc/usama-akram-s-g-YAb-QTo-Xk-unsplash-removebg-preview.png" width="350px" height="400px">
+      <div class="col  viewpimage ">
+        <!-- <img class="viewSneaker img-fluid d-flex" src="https://i.ibb.co/rQKJmYc/usama-akram-s-g-YAb-QTo-Xk-unsplash-removebg-preview.png" height="400px"> -->
       </div>
 
     </div>
+  </div>
 
   </div>
   <div class="container-fluid">
@@ -80,21 +82,21 @@
 </div>
   </div>
   
-  <div class="Shop-for" style="background-color: darkgray;">
+  <div class="Shop-for">
     <h1 class="pt-5 text-dark text-center display-4">SHOP FOR</h1>
     <div class="container">
       <div class="row ">
-        <div class="col-4 pt-5">
+        <div class="col-4 pt-5 category">
           <h4>MEN</h4>
-          <img class="img-fluid" src="https://i.ibb.co/LR8m3Yy/alonso-reyes-0-Hl-I76m4jx-U-unsplash-removebg-preview.png" width="600px" height="600px">
+          <img class="img-fluid " src="https://i.ibb.co/LR8m3Yy/alonso-reyes-0-Hl-I76m4jx-U-unsplash-removebg-preview.png" width="600px" height="600px">
 
         </div>
-        <div class="col-4">
+        <div class="col-4 category">
           <h4 class="pt-5">Women</h4>
           <img class="img-fluid" src="https://i.ibb.co/Hqdybdk/jennifer-marquez-NYMDlpfum1-Q-unsplash-removebg-preview.png" width="350px" height="400px">
 
         </div>
-        <div class="col-4">
+        <div class="col-4 category">
           <h4 class="pt-5">Kids</h4>
           <img class="img-fluid" src="https://i.ibb.co/gDXzd2R/kiana-bosman-vl-Hq-SYYb-JQw-unsplash-removebg-preview.png" width="350px" height="400px">
 
@@ -102,7 +104,7 @@
       </div>
     </div>
   </div>
-  <div class="special display-4 pt-5">SIGN UP NOW AND GET 60% OFF YOUR FIRST PURCHASE!</div>
+  <div class="special display-6 pt-5">SIGN UP NOW AND GET 60% OFF YOUR FIRST PURCHASE!</div>
   </div>
 </template>
 
@@ -112,10 +114,24 @@
   justify-content: space-around;
   background: #070707;
   /* width: 100vw; */
-  padding:2px;
+  padding:3px;
   /* Adjust padding and other styles as needed */
 }
-
+.category:hover{
+  transform: scale(1.2);
+}
+.viewport{
+  height:600px;
+  background-color:rgb(230, 230, 230);
+}
+.viewpimage{
+  border:2px solid  red;
+  margin-top:5%;
+}
+.viewSneaker{
+  margin-left:50%;
+  width:250px;
+}
 .custom-button {
   background-color:white;
   color:black;
@@ -129,7 +145,7 @@
 .text{
   padding-top:150px;
   font-family: monospace;
-  font-size:30px;
+  font-size:50px;
 }
 
 .custom-button:hover {
@@ -145,9 +161,9 @@
   background-color: #000;
 }
 .Shop-for{
-  color:white;
-  font-family: 'Courier New', Courier, monospace;
-  font-style:oblique;
+  color:rgb(246, 65, 96);
+  font-family: poppins;
+  background-color: rgb(230, 230, 230);
 }
 .secondDiv {
   height: 600px; /* Adjust height as needed */
@@ -161,9 +177,8 @@
 }
 .special{
   background-color: rgb(250, 166, 11);
-  height: 150px;
+  height: 100px;
   color:white;
-  font-family: monospace;
 }
 
 @keyframes slideBackground {

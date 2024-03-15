@@ -1,0 +1,121 @@
+<template>
+   <footer>
+  <div class="footer-content">
+    <div class="footer-column">
+      <h4>SPORTS</h4>
+      <ul>
+        <li><a href="#">Sneakers</a></li>
+        <li><a href="#">Boots</a></li>
+        <li><a href="#">Running</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>COMPANY INFO</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>SUPPORT</h4>
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li v-if="isAdmin"><a href="#">Admin</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>PRODUCTS</h4>
+      <ul>
+        <li><a href="#">Outdoors</a></li>
+        <li><a href="#">Indoors</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>FOLLOW US</h4>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+  </template>
+  
+  <style scoped>
+  
+  
+footer {
+  background-color: black;
+  color: white;
+  padding: 20px 0;
+  position: absolute;
+  width: 100%;
+  bottom: 1;
+}
+
+.footer-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Adjust width as needed */
+  border-top: 1px solid white; /* Add white border on top */
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.footer-column {
+  width: 20%; /* Adjust width as needed */
+}
+
+.footer-column h4 {
+  margin-bottom: 10px;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 5px;
+}
+
+/* Style links */
+.footer-column ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 0; /* Add space above and below the link */
+  display: block; /* Make links block-level elements to take full width */
+}
+
+/* Remove underline on hover */
+.footer-column ul li a:hover {
+  text-decoration: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .footer-column {
+    width: 45%;
+    margin-bottom: 20px;
+  }
+}
+  </style>
+  <script>
+  export default {
+    computed: {
+      isAdmin() {
+        // Check if the user is logged in and has admin role
+        return this.$store.state.user && this.$store.state.user.userRole === 'Admin';
+      }
+    }
+  }
+  </script>
+  

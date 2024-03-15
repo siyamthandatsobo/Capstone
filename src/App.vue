@@ -9,10 +9,18 @@
   <button v-if="$store.state.loggedIn" @click="logout">Logout</button>
 
   <router-view/>
-</template>
+  <footercomp />
+  </template>
 
 <script>
-export default {
+  import footercomp from './components/footerComp.vue'
+  export default {
+  components:{
+      // navComp,
+      footercomp
+      
+      
+    },
   methods: {
     logout() {
       // Logout from

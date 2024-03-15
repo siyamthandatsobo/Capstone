@@ -102,7 +102,7 @@
 
 <div class="container">
     <div class="table-container pt-5">
-        <table class="table table-dark table-striped">
+        <table class="table table-light table-striped">
             <thead>
                 <tr>
                     <th scope="col">User ID</th>
@@ -160,7 +160,7 @@
 
 <div class="container pt-5">
     <div class="table-container ">
-        <table class="table table-dark table-striped">
+        <table class="table table-light table-striped">
             <thead>
                 <tr>
             <th scope="col">Product ID</th>
