@@ -76,6 +76,8 @@ footer {
 
 .footer-column h4 {
   margin-bottom: 10px;
+  font-family:'Courier New', Courier, monospace; /* Make links block-level elements to take full width */
+
 }
 
 .footer-column ul {
@@ -92,7 +94,9 @@ footer {
   color: white;
   text-decoration: none;
   padding: 5px 0; /* Add space above and below the link */
-  display: block; /* Make links block-level elements to take full width */
+  display: block;
+  font-family:'Courier New', Courier, monospace; 
+  font-size:small;/* Make links block-level elements to take full width */
 }
 
 /* Remove underline on hover */

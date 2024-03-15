@@ -156,6 +156,7 @@ export default createStore({
         VueCookies.set('user', JSON.stringify(user));
 
         context.commit('setUser', user);
+        console.log(data)
         sweet('Success', 'Login successful!', 'success');
         await router.push('/');
       } catch (error) {
