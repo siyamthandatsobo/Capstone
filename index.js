@@ -43,8 +43,13 @@ const auth = async (req, res, next) => {
 
         if (result) {
             const tokenPayload = {
-                emailAdd: emailAdd,
-                userID: userInfo.userID, // Include userID in the token payload
+                userID: userInfo.userID,
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName,
+                emailAdd: userInfo.emailAdd, 
+                gender: userInfo.gender,
+                userRole: userInfo.userRole,
+                userProfile: userInfo.userProfile// Include userID in the token payload
             };
 
             const token = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '2h' });
@@ -74,7 +79,7 @@ const auth = async (req, res, next) => {
 app.use('/users' ,userRouter);
 app.post('/login', auth, async (req, res) => {
     const { emailAdd } = req.body;
-    const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ emailAdd: emailAdd }, process.env.SECRET_KEY, { expiresIn: '2h' });
 
     try {
         const userInfo = await checkUser(emailAdd);

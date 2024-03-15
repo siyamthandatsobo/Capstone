@@ -76,7 +76,7 @@ return getUser(user.insertId)
 }
 const checkUser = async (emailAdd) => {
     const [userResult] = await pool.query(`
-        SELECT userID, firstName, lastName, userPass
+        SELECT *
         FROM users
         WHERE emailAdd = ?
     `, [emailAdd]);
