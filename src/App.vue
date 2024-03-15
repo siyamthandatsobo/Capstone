@@ -1,22 +1,23 @@
 <template>
-  <nav>
+  <!-- <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/products">Products</router-link> |
     <router-link to="/cart">Cart</router-link> |
     <router-link to="/admin">Admin</router-link> |
     <router-link v-if="!$store.state.loggedIn" to="/login">Login</router-link>
   </nav>
-  <button v-if="$store.state.loggedIn" @click="logout">Logout</button>
+  <button v-if="$store.state.loggedIn" @click="logout">Logout</button> -->
 
-  <router-view/>
-  <footercomp />
+  <navComp/>
+    <footercomp />
   </template>
 
 <script>
-  import footercomp from './components/footerComp.vue'
+  import navComp from './components/navComp.vue';
+  import footercomp from './components/footerComp.vue';
   export default {
   components:{
-      // navComp,
+       navComp,
       footercomp
       
       

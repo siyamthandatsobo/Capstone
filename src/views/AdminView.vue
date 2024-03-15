@@ -75,7 +75,7 @@
         <input type="number" id="amount" v-model="payload.amount" required>
         
       <label for="Category">Category</label>
-      <input type="text" id="Category" v-model="payload.Category" required>
+      <input type="text" id="Category" v-model="payload.category" required>
       
       <label for="prodUrl">Image URL</label>
       <input type="text" id="prodUrl" v-model="payload.prodUrl" required>
@@ -180,7 +180,7 @@
             <td>{{ item.prodName }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.amount }}</td>
-            <td>{{ item.Category }}</td>
+            <td>{{ item.category }}</td>
             <td>
                 <img
                 :src="item.prodUrl"
@@ -230,7 +230,7 @@ export default {
                 prodName: null,
                 quantity: null,
                 amount: null,
-                Category: null,
+                category: null,
       prodUrl: null,
     },
     userPayload: {
@@ -260,7 +260,7 @@ export default {
         prodName: this.payload.prodName,
         quantity: this.payload.quantity,
         amount: this.payload.amount,
-        category: this.payload.Category,
+        category: this.payload.category,
         prodUrl: this.payload.prodUrl,
       };
       this.$store.dispatch("updateProduct", edit);

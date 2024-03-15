@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <img class="left-image" src="https://i.ibb.co/z83wmWr/imani-bahati-Lx-Vx-PA1-LOVM-unsplash.jpg" alt="left-image" @mouseover="spinImage($event)" >
     <div class="container">
       <input type="checkbox" id="register_toggle">
       <div class="slider">
@@ -35,6 +36,7 @@
         </div>
       </div>
     </div>
+    <img class="right-image" src="https://i.ibb.co/pyMSxv7/ryan-plomp-PGTO-A0e-Lt4-unsplash.jpg" alt="right-image" @mouseover="spinImage($event)" >
   </div>
 </template>
 
@@ -54,6 +56,9 @@ export default {
     login() {
       console.log(this.emailAdd);
       this.$store.dispatch('login', this.$data);
+    },
+    spinImage(event) {
+      event.target.classList.toggle('spin');
     }
   }
 }
@@ -67,7 +72,7 @@ export default {
   overflow: hidden;
   color: white;
   box-shadow: 1.5px 1.5px 3px #e1dcdc, -1.5px -1.5px 3px rgba(68, 68, 68, 0.25), inset 0px 0px 0px #9c4242, inset 0px -0px 0px #5f5e5e;
-  /* height:50vh; */
+  background-color: #0e0e0e;
 }
 
 .container .slider {
@@ -168,9 +173,34 @@ form button:active {
   font-weight: 700;
   cursor: pointer;
 }
-.login{
-  background-color: #0e0e0e;
-  padding-top:3%;
-  padding-bottom:3%;
+
+.login {
+  background-color: rgb(230, 230, 230);
+  padding-top: 3%;
+  padding-bottom: 3%;
+  position: relative;
+}
+
+.left-image,
+.right-image {
+  width:300px;
+  height:300px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+}
+
+.left-image {
+  left: 20px;
+}
+
+.right-image {
+  right: 20px;
+}
+
+.left-image:hover,
+.right-image:hover {
+  transform: translateY(-50%) rotate(360deg);
 }
 </style>

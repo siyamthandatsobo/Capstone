@@ -1,55 +1,7 @@
 <template>
   <div>
 
-    <div class="modals">
-      <button class="  custom-button">Free delivery</button>
-      <button class="  custom-button login">Login/Signup</button>
-      <button class="  custom-button">Manage cookies</button>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
-      <!-- Logo -->
-      <a class="navbar-brand" href="#">
-        <img src="https://i.ibb.co/9rR4Bjj/Royal.png"  alt="Royal Footwear" width="50" height="50">
-      </a>
-      
-      <!-- Toggler/collapsibe Button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <!-- Navbar links -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item text-black">
-            <a class="nav-link " href="#">Men</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="#">Women</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link " href="#">Kids</a>
-          </li>
-        </ul>
-
-        <!-- Search form -->
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-              <path d="M10.832 9.105a5.5 5.5 0 1 0-1.727 1.727l3.692 3.692a.5.5 0 0 0 .853-.354V12.5a.5.5 0 0 0-.5-.5h-.793a.5.5 0 0 0-.354.853l-3.692 3.692a5.5 5.5 0 1 0 1.727-1.727l-.07-.07 3.692-3.692.07.07zM2 6.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z"/>
-            </svg>
-          </button>
-        </form>
-
-        <!-- Cart icon -->
-        <a class="nav-link" href="../views/cartView.vue">
-          <i class="bi bi-cart"><img src="https://i.ibb.co/SsH8Sbs/icons8-shopping-bag.gif"  alt="Royal Footwear" width="50" height="50">
-</i>
-        </a>
-      </div>
-    </div>
-  </nav>
+   
   <div class="viewport">
 <div class="container">
 
@@ -61,7 +13,7 @@
       
       </div>
       <div class="col  viewpimage ">
-        <!-- <img class="viewSneaker img-fluid d-flex" src="https://i.ibb.co/rQKJmYc/usama-akram-s-g-YAb-QTo-Xk-unsplash-removebg-preview.png" height="400px"> -->
+        <img class="viewSneaker img-fluid d-flex" src="https://i.ibb.co/rQKJmYc/usama-akram-s-g-YAb-QTo-Xk-unsplash-removebg-preview.png" height="400px">
       </div>
 
     </div>

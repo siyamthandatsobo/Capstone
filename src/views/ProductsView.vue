@@ -1,66 +1,72 @@
 <template>
-  <div>
+  <div class="product">
+  <div class="container container-fluid">
     <h2 class="display-1">Products</h2>
 
-    <!-- Sneakers Section -->
-    <div v-if="sneakers && sneakers.length > 0">
-      <h3>Sneakers</h3>
-      <div class="scrollable-container">
-        <div v-for="product in sneakers" :key="product.prodID" class="card">
-          <!-- Your card content here -->
-          <img :src="product.prodUrl" class="card-img-top" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">{{ product.prodName }}</h5>
-            <p class="card-text">Price: R{{ product.amount }}</p>
-            <input v-model="product.quantity" type="number" min="1" max="10" class="form-control" />
-          </div>
-          <div class="card-footer">
-            <button @click="addToCart(product)" class="btn btn-primary">Add to Cart</button>
-            <router-link :to="{ name: 'ProductDetails', params: { prodID: product.prodID }}" class="btn btn-secondary">View Details</router-link>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Boots Section -->
-    <div v-if="boots && boots.length > 0">
-      <h3>Boots</h3>
-      <div class="scrollable-container">
-        <div v-for="product in boots" :key="product.prodID" class="card">
-          <!-- Your card content here -->
-          <img :src="product.prodUrl" class="card-img-top" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">{{ product.prodName }}</h5>
-            <p class="card-text">Price: R{{ product.amount }}</p>
-            <input v-model="product.quantity" type="number" min="1" max="10" class="form-control" />
-          </div>
-          <div class="card-footer" v-if="isLoggedIn">
-      <router-link to="/view-more" class="btn btn-primary">View More</router-link>
-    </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Trainers Section -->
-    <div v-if="trainers && trainers.length > 0">
-      <h3>Trainers</h3>
-      <div class="scrollable-container">
-        <div v-for="product in trainers" :key="product.prodID" class="card">
-          <!-- Your card content here -->
-          <img :src="product.prodUrl" class="card-img-top" alt="Product Image">
-          <div class="card-body">
-            <h5 class="card-title">{{ product.prodName }}</h5>
-            <p class="card-text">Price: R{{ product.amount }}</p>
-            <input v-model="product.quantity" type="number" min="1" max="10" class="form-control" />
-          </div>
-          <div class="card-footer">
-            <button @click="addToCart(product)" class="btn btn-primary">Add to Cart</button>
-            <router-link :to="{ name: 'ProductDetails', params: { prodID: product.prodID }}" class="btn btn-secondary">View Details</router-link>
-          </div>
+<!-- Sneakers Section -->
+<div v-if="sneakers && sneakers.length > 0">
+  <h3>Sneakers</h3>
+  <div class="scrollable-container horizontal-scroll">
+    <div class="product-grid">
+      <div v-for="product in sneakers" :key="product.prodID" class="product-card">
+        <!-- Your product content here -->
+        <img :src="product.prodUrl" class="product-img" alt="Product Image">
+        <div class="product-info">
+          <h5 class="product-title">{{ product.prodName }}</h5>
+          <p class="product-price">Price: R{{ product.amount }}</p>
+          <p class="product-category">{{ product.category }}</p>
+          <input v-model="product.quantity" type="number" min="1" max="10" class="form-control product-quantity" />
+          <button @click="addToCart(product)" class="btn btn-primary product-btn">Add to Cart</button>
+          <router-link v-if="isLoggedIn" :to="{ name: 'ProductDetails', params: { prodID: product.prodID }}" class="btn btn-secondary product-btn">View Details</router-link>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+    <!-- Boots Section -->
+    <div v-if="boots && boots.length > 0">
+  <h3>Boots</h3>
+  <div class="scrollable-container horizontal-scroll">
+    <div class="product-grid">
+      <div v-for="product in boots" :key="product.prodID" class="product-card">
+        <!-- Your product content here -->
+        <img :src="product.prodUrl" class="product-img" alt="Product Image">
+        <div class="product-info">
+          <h5 class="product-title">{{ product.prodName }}</h5>
+          <p class="product-price">Price: R{{ product.amount }}</p>
+          <p class="product-category">{{ product.category }}</p>
+          <input v-model="product.quantity" type="number" min="1" max="10" class="form-control product-quantity" />
+          <button @click="addToCart(product)" class="btn btn-primary product-btn">Add to Cart</button>
+          <router-link v-if="isLoggedIn" :to="{ name: 'ProductDetails', params: { prodID: product.prodID }}" class="btn btn-secondary product-btn">View Details</router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Trainers Section -->
+<div v-if="trainers && trainers.length > 0">
+  <h3>Trainers</h3>
+  <div class="scrollable-container horizontal-scroll">
+    <div class="product-grid">
+      <div v-for="product in trainers" :key="product.prodID" class="product-card">
+        <!-- Your product content here -->
+        <img :src="product.prodUrl" class="product-img" alt="Product Image">
+        <div class="product-info">
+          <h5 class="product-title">{{ product.prodName }}</h5>
+          <p class="product-price">Price: R{{ product.amount }}</p>
+          <p class="product-category">{{ product.category }}</p>
+          <input v-model="product.quantity" type="number" min="1" max="10" class="form-control product-quantity" />
+          <button @click="addToCart(product)" class="btn btn-primary product-btn">Add to Cart</button>
+          <router-link v-if="isLoggedIn" :to="{ name: 'ProductDetails', params: { prodID: product.prodID }}" class="btn btn-secondary product-btn">View Details</router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
 </template>
 
 <script>
@@ -71,32 +77,39 @@ export default {
      
     },
     sneakers() {
-      return this.products.filter(product => product.category === 'sneakers');
+      return this.products.filter(product => product.category === 'sneaker');
     },
     boots() {
-      return this.products.filter(product => product.category === 'boots');
+      return this.products.filter(product => product.category === 'Boots');
     },
     trainers() {
       return this.products.filter(product => product.category === 'trainers');
     },
     products() {
-      return this.$store.state.Products || []; // Add fallback to empty array if Products is null
+      return this.$store.state.Products || [];
+      console.log(this.$store.state.Products) // Add fallback to empty array if Products is null
     },
     isLoggedIn() {
-      return this.$store.state.isLoggedIn; // Assuming isLoggedIn is a boolean in your Vuex store
+      return this.$store.state.loggedIn; // Assuming isLoggedIn is a boolean in your Vuex store
     }
   },
   methods: {
     addToCart(product) {
-      if (product.quantity && product.quantity > 0) {
-        this.$store.dispatch('addProductToCart', {
-          prodID: product.prodID,
-          quantity: product.quantity,
-        });
-      } else {
-        console.error('Invalid quantity');
-      }
-    },
+    if (!product.quantity || product.quantity <= 0) {
+      console.error('Invalid quantity');
+      return;
+    }
+
+    this.$store.dispatch('addProductToCart', {
+      prodID: product.prodID,
+      quantity: product.quantity,
+    }).then(() => {
+      // Reset quantity after adding to cart
+      product.quantity = 1; // Assuming 1 is the default quantity
+    }).catch(error => {
+      console.error('Error adding product to cart:', error);
+    });
+  },
     getSingleProd(prodID){
       
       this.$store.dispatch('getProductById', prodID);
@@ -110,25 +123,66 @@ export default {
 
 <style scoped>
 /* Add your custom styles for the scrollable container here */
-.scrollable-container {
-  max-height: 300px; /* Adjust height as needed */
-  overflow-y: auto;
+.scrollable-container.horizontal-scroll {
+  overflow-x: auto;
+  white-space: nowrap; /* Prevents wrapping to new lines */
 }
 
-/* Remove fixed height from the cards */
-.card {
-  /* Remove height property */
-  margin-bottom: 20px;
-  background-color: rgb(243, 243, 243);
-  transition: transform 0.3s;
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust column width as needed */
+  grid-gap: 20px; /* Adjust gap between products */
 }
-
-.card:hover {
-  transform: scale(1.05);
+ .product-card {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 0 0 auto; /* Ensure the cards don't shrink */
+  margin-right: 20px;
+  border: 1px solid blueviolet;
+} 
+.product-card:hover {
+  transform: scale(1.05); /* Scale the card when hovered over */
+  border-color: rgb(6, 5, 5); /* Change border color to black */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add box shadow for better visual effect */
 }
-
-img {
+.product-img {
   width: 100%;
-  max-height: max-content;
+  max-height: 200px; /* Adjust image height as needed */
+  object-fit: cover;
+  transition: transform 0.3s
 }
+.product-card:hover img {
+  transform: translateY(-50px); /* Move the image up by 10px when hovered over */
+}
+
+.product-info {
+  flex-grow: 1;
+}
+
+.product-title {
+  margin-top: 0;
+}
+
+.product-price {
+  margin-bottom: 5px;
+}
+
+.product-category {
+  margin-bottom: 10px;
+}
+
+.product-quantity {
+  margin-bottom: 10px;
+}
+
+.product-btn {
+  margin-top: auto;
+}
+.product{
+  background-color: rgb(230, 230, 230);
+}
+
 </style>
