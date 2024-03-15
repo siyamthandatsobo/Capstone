@@ -81,7 +81,7 @@ app.post('/login', auth, async (req, res) => {
 
         if (userInfo) {
             // Set the SameSite attribute for the cookie
-            res.cookie('jwt', token, { sameSite: 'None', secure: true });
+            res.cookie('jwt', token);
             res.json({
                 msg: 'you have logged in',
                 user: userInfo,
