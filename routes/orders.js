@@ -6,9 +6,9 @@ const router = express.Router();
 
 router
     .route('/')
-    .get(authenticate,controller.getOrder)
+    .get(controller.getOrder)
     // .get(authenticate, controller.getOrder)
-    .post(controller.postOrder)
+    .post(authenticate, controller.postOrder)
     
     router
     .route('/:prodID')
