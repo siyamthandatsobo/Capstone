@@ -58,6 +58,12 @@
   
   <script>
   export default {
+    methods: {
+    logout() {
+      // Logout from
+      this.$store.dispatch('logout');
+    }
+  }
   };
   </script>
   

@@ -17,6 +17,7 @@ export default createStore({
     product: null,
     cart: [],
     loggedIn: false,
+    productQuantity: 1,
   },
   getters: {},
   mutations: {
@@ -36,7 +37,9 @@ export default createStore({
       state.user = user;
       state.loggedIn = !!user;
     },
-   
+    setProductQuantity(state, quantity) {
+      state.productQuantity = quantity;
+    },
     removeFromCart(state, prodID) {
       state.cart = state.cart.filter(item => item.id !== prodID);
     }
@@ -81,27 +84,26 @@ export default createStore({
         sweet('Error', 'Failed to delete product', 'error');
       }
     },
-    async addProductToCart({ commit, state }, { prodID, quantity }) {
+    async addProductToCart({ state }, prodID) {
       try {
         if (!state.loggedIn) {
           console.error('User not logged in');
           return;
         }
-
+        
         const token = VueCookies.get('jwt');
+        
+        // Add the product to the cart database table
         await axios.post(
           `${baseUrl}/order`,
-          { prodID, userID: state.user.userID, quantity },
+          { prodID, userID: state.user.userID, quantity: state.productQuantity },
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-
-        const { data: updatedCart } = await axios.get(`${baseUrl}/order/user`);
-        commit('setCart', updatedCart);
-
+        
         sweet('Success', 'Product added to cart successfully!', 'success');
       } catch (error) {
         console.error('Error adding product to cart:', error.message);
@@ -148,17 +150,19 @@ export default createStore({
         });
       }
     },
+    
     async login(context, userLogin) {
       try {
         let { data } = await axios.post(baseUrl + '/login', userLogin);
         const { user, token } = data;
-    
+        
         // Save user information and token in cookies
         VueCookies.set('user', JSON.stringify(user));
         VueCookies.set('jwt', token);
-        console.log(VueCookies.get('jwt'));
+        
+        // Update Vuex store with user info
         context.commit('setUser', user);
-        console.log(data)
+        
         sweet('Success', 'Login successful!', 'success');
         await router.push('/');
       } catch (error) {
@@ -168,20 +172,13 @@ export default createStore({
     },
     
     
-    checkCookies({ commit }) {
-      const token = VueCookies.get('jwt');
-      const userString = VueCookies.get('user');
-      if (token && userString) {
-        const user = JSON.parse(userString);
-        commit('setUser', user);
-      }
-    },
+   
   
     async logout(context) {
       try {
         VueCookies.remove('user');
-        context.commit('setUser', null);
         VueCookies.remove('jwt');
+        context.commit('setUser', null);
 
         sweet('Success', 'Logout successful!', 'success');
         window.location.reload();

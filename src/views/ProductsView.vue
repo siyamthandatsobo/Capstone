@@ -72,10 +72,7 @@
 <script>
 export default {
   computed: {
-    products() {
-      return this.$store.state.Products;
-     
-    },
+   
     sneakers() {
       return this.products.filter(product => product.category === 'sneaker');
     },
@@ -87,7 +84,6 @@ export default {
     },
     products() {
       return this.$store.state.Products || [];
-      console.log(this.$store.state.Products) // Add fallback to empty array if Products is null
     },
     isLoggedIn() {
       return this.$store.state.loggedIn; // Assuming isLoggedIn is a boolean in your Vuex store
