@@ -88,7 +88,7 @@ export default createStore({
           return;
         }
 
-        const token = localStorage.getItem('jwt');
+        const token = VueCookies.get('jwt');
         await axios.post(
           `${baseUrl}/order`,
           { prodID, userID: state.user.userID, quantity },
@@ -151,11 +151,12 @@ export default createStore({
     async login(context, userLogin) {
       try {
         let { data } = await axios.post(baseUrl + '/login', userLogin);
-        const { user } = data;
-
-        // Save user information in cookies
+        const { user, token } = data;
+    
+        // Save user information and token in cookies
         VueCookies.set('user', JSON.stringify(user));
-
+        VueCookies.set('jwt', token);
+        console.log(VueCookies.get('jwt'));
         context.commit('setUser', user);
         console.log(data)
         sweet('Success', 'Login successful!', 'success');
@@ -165,6 +166,7 @@ export default createStore({
         sweet('Error', 'Failed to log in', 'error');
       }
     },
+    
     
     checkCookies({ commit }) {
       const token = VueCookies.get('jwt');
