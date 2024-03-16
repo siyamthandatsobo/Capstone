@@ -46,7 +46,7 @@ const auth = async (req, res, next) => {
                 userID: userInfo.userID,
                 firstName: userInfo.firstName,
                 lastName: userInfo.lastName,
-                emailAdd: userInfo.emailAdd, 
+                emailAdd: emailAdd, 
                 gender: userInfo.gender,
                 userRole: userInfo.userRole,
                 userProfile: userInfo.userProfile// Include userID in the token payload
@@ -54,7 +54,10 @@ const auth = async (req, res, next) => {
 
             const token = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '2h' });
             console.log(token);
-            res.cookie('jwt', token);
+            res.cookie('jwt', token, {
+                sameSite: 'none', // You can set it to 'strict' or 'lax' depending on your requirements
+                // Other cookie options...
+              });
             res.json({
                 msg: 'You have logged in',
                 user: userInfo,
