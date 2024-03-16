@@ -46,7 +46,7 @@ export default{
             console.log('Response from addOrder:', post);
     
             // Respond with the updated order
-            res.send(await getOrder());
+            res.send(await getOrder(userID));
           });
         } catch (error) {
           console.error('Error processing order:', error);
