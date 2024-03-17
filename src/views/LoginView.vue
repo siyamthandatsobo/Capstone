@@ -18,22 +18,37 @@
           <span class="bottom_text">Don't have an account? <label for="register_toggle" class="swtich">Sign Up</label></span>
         </div>
         <div class="form">
-          <span class="title">Sign Up</span>
-          <div class="form_control">
-            <input type="text" class="input" placeholder="Username" required>
-            <label class="label">Username</label>
-          </div>
-          <div class="form_control">
-            <input type="email" class="input" placeholder="Email" required>
-            <label class="label">Email</label>
-          </div>
-          <div class="form_control">
-            <input type="password" class="input" placeholder="Password" required>
-            <label class="label">Password</label>
-          </div>
-          <button class="btn bg-dark text-white" @click="Signup()">Sign Up</button>
-          <span class="bottom_text">Already have an account? <label for="register_toggle" class="swtich">Sign In</label></span>
-        </div>
+      <span class="title">Sign Up</span>
+
+      <div class="form_control">
+        <input type="email" class="input" placeholder="Email" required v-model="userPayload.emailAdd">
+        <label class="label">Email</label>
+      </div>
+      <div class="form_control">
+        <input type="text" class="input" placeholder="FirstName" required v-model="userPayload.firstName">
+        <label class="label">FirstName</label>
+      </div>
+      <div class="form_control">
+        <input type="text" class="input" placeholder="LastName" required v-model="userPayload.lastName">
+        <label class="label">LastName</label>
+      </div>
+      <div class="form_control">
+        <input type="text" class="input" placeholder="Gender" required v-model="userPayload.gender">
+        <label class="label">Gender</label>
+      </div>
+      <div class="form_control">
+        <input type="number" class="input" placeholder="Age" required v-model="userPayload.userAge">
+        <label class="label">Age</label>
+      </div>
+      <div class="form_control">
+        <input type="password" class="input" placeholder="Password" required v-model="userPayload.userPass">
+        <label class="label">Password</label>
+      </div>
+      <!-- You can add more input fields for other properties if needed -->
+
+      <button class="btn bg-dark text-white" @click="signup()">Sign Up</button>
+      <span class="bottom_text">Already have an account? <label for="register_toggle" class="swtich">Sign In</label></span>
+    </div>
       </div>
     </div>
     <img class="right-image" src="https://i.ibb.co/pyMSxv7/ryan-plomp-PGTO-A0e-Lt4-unsplash.jpg" alt="right-image" @mouseover="spinImage($event)" >
@@ -44,24 +59,50 @@
 export default {
   data() {
     return {
+      userPayload: {
+        firstName: null,
+        lastName: null,
+        userAge: null,
+        gender: null,
+        emailAdd: null,
+        userRole: null,
+        userPass: null,
+      },
       emailAdd: '',
       userPass: ''
-    }
+    };
   },
   methods: {
-    Signup() {
-      console.log(this.emailAdd);
-      this.$store.dispatch('signup', this.$data);
+    addUser() {
+      this.$store.dispatch("addUser", this.userPayload);
+      // Reset form fields after user is added
+      this.resetForm();
     },
     login() {
-      console.log(this.emailAdd);
-      this.$store.dispatch('login', this.$data);
+      // Check if email and password are provided
+      if (this.emailAdd && this.userPass) {
+        // Perform login action with provided credentials
+        this.$store.dispatch('login', { emailAdd: this.emailAdd, userPass: this.userPass });
+      } else {
+        // Handle case when email or password is missing
+        console.log("Please provide email and password");
+      }
     },
-    spinImage(event) {
-      event.target.classList.toggle('spin');
+    signup() {
+      // Perform signup action with userPayload
+      this.addUser();
+    },
+    resetForm() {
+      // Resetting each property to null
+      Object.keys(this.userPayload).forEach(key => {
+        this.userPayload[key] = null;
+      });
+      // Reset email and password fields
+      this.emailAdd = '';
+      this.userPass = '';
     }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

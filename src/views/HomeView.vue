@@ -77,7 +77,6 @@
   background-color:rgb(230, 230, 230);
 }
 .viewpimage{
-  border:2px solid  red;
   margin-top:5%;
 }
 .viewSneaker{

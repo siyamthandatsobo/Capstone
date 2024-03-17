@@ -7,7 +7,7 @@ import VueCookies from 'vue-cookies';
 
 // Set up Axios configurations
 axios.defaults.withCredentials = true;
-const baseUrl = 'https://capstone-opj5.onrender.com';
+const baseUrl = 'http://localhost:9000';
 
 export default createStore({
   state: {
@@ -18,8 +18,24 @@ export default createStore({
     cart: [],
     loggedIn: false,
     productQuantity: 1,
+    searchQuery: '',
   },
-  getters: {},
+  getters: {
+    filteredProducts(state) {
+      const query = state.searchQuery.toLowerCase().trim();
+      if (!query) {
+        return state.products;
+      } else {
+        return state.products.filter(product => {
+          return (
+            product.prodName.toLowerCase().includes(query) ||
+            product.category.toLowerCase().includes(query)
+          );
+        });
+      }
+    }
+  },
+  
   mutations: {
     setProducts(state, payload) {
       state.Products = payload;
@@ -42,6 +58,9 @@ export default createStore({
     },
     removeFromCart(state, prodID) {
       state.cart = state.cart.filter(item => item.id !== prodID);
+    },
+    setSearchQuery(state, query) {
+      state.searchQuery = query;
     }
   },
   actions: {
@@ -84,7 +103,7 @@ export default createStore({
         sweet('Error', 'Failed to delete product', 'error');
       }
     },
-    async addProductToCart({ state }, prodID) {
+    async addProductToCart({ state }, { prodID, quantity }) {
       try {
         if (!state.loggedIn) {
           console.error('User not logged in');
@@ -93,10 +112,16 @@ export default createStore({
         
         const token = VueCookies.get('jwt');
         
+        // Only add the product to the cart if a quantity is provided
+        if (!quantity || quantity <= 0) {
+          console.error('Invalid quantity provided');
+          return;
+        }
+    
         // Add the product to the cart database table
         await axios.post(
           `${baseUrl}/order`,
-          { prodID, userID: state.user.userID, quantity: state.productQuantity },
+          { prodID, userID: state.user.userID, quantity },
           {
             headers: {
               Authorization: `Bearer ${token}`,

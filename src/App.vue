@@ -1,27 +1,35 @@
 <template>
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/products">Products</router-link> |
-    <router-link to="/cart">Cart</router-link> |
-    <router-link to="/admin">Admin</router-link> |
-    <router-link v-if="!$store.state.loggedIn" to="/login">Login</router-link>
-  </nav>
-  <button v-if="$store.state.loggedIn" @click="logout">Logout</button> -->
-
-  <navComp/>
-    <footercomp />
-  </template>
+  <div id="app">
+    <Navbar />
+    <Spinner v-if="loading" />
+    <router-view />
+  </div>
+  <footercomp />
+</template>
 
 <script>
-  import navComp from './components/navComp.vue';
-  import footercomp from './components/footerComp.vue';
+  import Navbar from './components/navComp.vue';
+  import Spinner from './components/SpinnerComp.vue';
+    import footercomp from './components/footerComp.vue';
   export default {
   components:{
-       navComp,
-      footercomp
+       Navbar,
+       Spinner,
+       footercomp
       
       
     },
+    data() {
+          return{
+              loading:true,
+          };
+         },
+         mounted() {
+    setTimeout(() => {
+      this.loading = false;
+    }, 2000);
+  },
+
   methods: {
     logout() {
       // Logout from
@@ -31,22 +39,5 @@
 }
 </script>
 <style>
-#app {
-  margin: 0;
-    padding: 0;
-     box-sizing: border-box;
-}
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

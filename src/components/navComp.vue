@@ -30,17 +30,13 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/products">Kids</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/Profile">Profile</router-link>
+            </li>
           </ul>
   
           <!-- Search form -->
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M10.832 9.105a5.5 5.5 0 1 0-1.727 1.727l3.692 3.692a.5.5 0 0 0 .853-.354V12.5a.5.5 0 0 0-.5-.5h-.793a.5.5 0 0 0-.354.853l-3.692 3.692a5.5 5.5 0 1 0 1.727-1.727l-.07-.07 3.692-3.692.07.07zM2 6.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0z"/>
-              </svg>
-            </button>
-          </form>
+          
   
           <!-- Cart icon -->
           <router-link class="nav-link" to="/cart">
@@ -52,7 +48,6 @@
     <button v-if="$store.state.loggedIn" @click="logout">Logout</button> 
 
   
-  <RouterView></RouterView>
 </div>
   </template>
   
@@ -76,7 +71,10 @@
   
   .navbar-nav .nav-item {
     flex: 1; /* Each nav item takes equal space */
-    text-align: center; /* Center aligns the text */
+    text-align: center; 
+    font-family:monospace;
+    font-size:20px;
+    font-weight: 200;/* Center aligns the text */
   }
   
   /* Add more styles as needed */
