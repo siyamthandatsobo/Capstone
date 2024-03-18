@@ -1,4 +1,4 @@
-import {addOrder,getOrder,deleteOrder,editOrderQuantity,getOrdersByUserID} from '../model/database.js'
+import {addOrder,getOrder,deleteOrder,editOrderQuantity,getOrdersByUserID, getALLOrders} from '../model/database.js'
 import jwt from 'jsonwebtoken';
 
 export default{
@@ -61,6 +61,9 @@ getOrdersByUser: async (req, res) => {
     const userID = req.user.userID; // Get userID from the authenticated user
     const orders = await getOrdersByUserID(userID);
     res.json(orders);
+},
+getAll:async(req,res)=>{
+  res.send(await getALLOrders())
 },
 deleteOrder: async (req, res) => {
     const prodID = req.params.prodID;

@@ -117,6 +117,14 @@ const getOrder=async(orderID)=> {
 //use a prepared statement for best practice
 return result
 }
+const getALLOrders=async()=> {
+    const [result]=await pool.query(`
+    SELECT * FROM cart
+    `)
+    
+//use a prepared statement for best practice
+return result
+}
 const getOrdersByUserID = async (userID) => {
     try {
         const [result] = await pool.query(`
@@ -132,7 +140,6 @@ const getOrdersByUserID = async (userID) => {
         throw error;
     }
 };
- console.log(await getOrdersByUserID(10))
 
 
 const deleteOrder = async (prodID) => {
@@ -190,4 +197,5 @@ const deleteOrder = async (prodID) => {
     //    console.log(await(getOrdersByUserID(13)))
 export {getUsers,getUser,addUser,editUser,deleteUser,checkUser}
 export {getProducts,getProduct,addProduct,editProduct,deleteProduct}
-export {getOrder,getOrdersByUserID,deleteOrder,editOrderQuantity,addOrder}
+export {getOrder,getOrdersByUserID,deleteOrder,editOrderQuantity,addOrder,getALLOrders}
+

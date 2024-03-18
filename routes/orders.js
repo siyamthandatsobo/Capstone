@@ -9,7 +9,10 @@ router
     .get(controller.getOrder)
     // .get(authenticate, controller.getOrder)
     .post(authenticate, controller.postOrder)
-    
+    router
+    .route('/all')
+    .get(controller.getAll)
+
     router
     .route('/:prodID')
     .delete(controller.deleteOrder)
