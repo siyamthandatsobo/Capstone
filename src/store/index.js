@@ -16,6 +16,7 @@ export default createStore({
     Products: null,
     product: null,
     cart: [],
+    Cart:[],
     loggedIn: false,
     productQuantity: 1,
     searchQuery: '',
@@ -46,9 +47,13 @@ export default createStore({
     setCart(state, payload) {
       state.cart = payload;
     },
+    setCartAll(state, payload) {
+      state.Cart = payload;
+    },
     setUsers(state, users) {
       state.users = users;
     },
+
     setUser(state, user) {
       state.user = user;
       state.loggedIn = !!user;
@@ -71,6 +76,15 @@ export default createStore({
         commit('setProducts', data);
       } catch (error) {
         console.error('Error getting products:', error);
+      }
+    },
+    async getAllOrders({ commit }) {
+      try {
+        const { data } = await axios.get(`${baseUrl}/order/all`);
+        console.log(data)
+        commit('setCartAll', data);
+      } catch (error) {
+        console.error('Error getting cart:', error);
       }
     },
     async getOrderItemsByUser({ commit, state }) {
@@ -109,9 +123,7 @@ export default createStore({
           console.error('User not logged in');
           return;
         }
-        
-        const token = VueCookies.get('jwt');
-        
+    
         // Only add the product to the cart if a quantity is provided
         if (!quantity || quantity <= 0) {
           console.error('Invalid quantity provided');
@@ -121,14 +133,9 @@ export default createStore({
         // Add the product to the cart database table
         await axios.post(
           `${baseUrl}/order`,
-          { prodID, userID: state.user.userID, quantity },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          { prodID, userID: state.user.userID, quantity }
         );
-        
+    
         sweet('Success', 'Product added to cart successfully!', 'success');
       } catch (error) {
         console.error('Error adding product to cart:', error.message);
@@ -136,13 +143,13 @@ export default createStore({
         sweet('Error', 'Failed to add product to cart', 'error');
       }
     },
+    
     async deleteProdFromCart({ commit, state }, prodID) {
       try {
         await axios.delete(`${baseUrl}/order/${prodID}`);
         commit('removeFromCart', prodID); // Create a mutation to remove the item from the cart
         sweet('Success', 'Product removed from cart successfully!', 'success');
-        window.location.reload();
-
+       
       } catch (error) {
         console.error('Error deleting product:', error);
         sweet('Error', 'Failed to remove product from cart', 'error');

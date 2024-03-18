@@ -215,6 +215,54 @@
     </table>
 </div>
 </div>
+<div class="container pt-5">
+    <div class="table-container ">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr>
+            <th scope="col">Product ID</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Product Quantity</th>
+            <th scope="col">UserID</th>
+            <th scope="col">Amount</th>
+            <th scope="col">#edit </th>
+            <th scope="col">#delete</th>
+        </tr>
+    </thead>
+    <tbody v-for="order in Orders" :key="order.orderID">
+        <tr>
+            <!-- <th scope="row"></th> -->
+            <td>{{ order.orderID }}</td>
+            <td>{{ order.prodID }}</td>
+            
+            <td>{{ order.quantity }}</td>
+            <td>{{ order.userID }}</td>
+            <td>{{ order.totalPrice }}</td>
+            
+            <td>
+                <img
+                src="https://i.ibb.co/94g6875/bin.png"
+                alt="Delete"
+                
+                width="30"
+                height="30"
+                />
+            </td>
+            <td>
+                <img
+                src="https://i.ibb.co/JxK7ptg/product-design.png"
+                alt="Edit"
+                
+                
+                width="30"
+                height="30"
+         />
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
 </div>
 </template>
 
@@ -348,10 +396,14 @@ export default {
     products() {
        return this.$store.state.Products;
     },
+    Orders() {
+       return this.$store.state.Cart;
+    },
   },
   mounted() {
      this.$store.dispatch("fetchUsers");
     this.$store.dispatch("getProducts");
+    this.$store.dispatch("getAllOrders");
   },
 };
 
