@@ -220,11 +220,11 @@
         <table class="table table-light table-striped">
             <thead>
                 <tr>
-            <th scope="col">Product ID</th>
-            <th scope="col">Product Name</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Prod ID</th>
             <th scope="col">Product Quantity</th>
             <th scope="col">UserID</th>
-            <th scope="col">Amount</th>
+            <th scope="col">Total Amount</th>
             <th scope="col">#edit </th>
             <th scope="col">#delete</th>
         </tr>

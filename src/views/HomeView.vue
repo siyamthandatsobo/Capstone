@@ -3,6 +3,7 @@
 
    
   <div class="viewport">
+    {{ $store.state.loggedIn}}
 <div class="container">
 
   <div class="row"  >

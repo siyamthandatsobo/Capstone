@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <div class="modals text-white">
+  <div>
+    <div class="modals text-white">
       <a href="#">Free delivery</a>
       <router-link v-if="!$store.state.loggedIn" to="/login">Login</router-link>
       <a href="#">Manage cookies</a>
     </div>
- 
+
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
       <div class="container">
         <!-- Logo -->
@@ -35,66 +35,62 @@
             </li>
           </ul>
   
-          <!-- Search form -->
-          
-  
           <!-- Cart icon -->
           <router-link class="nav-link" to="/cart">
             <i class="bi bi-cart"><img src="https://i.ibb.co/SsH8Sbs/icons8-shopping-bag.gif" alt="Royal Footwear" width="50" height="50"></i>
           </router-link>
+          
+          <!-- Logout button -->
+          <button v-if="$store.state.loggedIn" @click="logout">Logout</button>
         </div>
       </div>
     </nav>
-    <button v-if="$store.state.loggedIn" @click="logout">Logout</button> 
+  </div>
+</template>
 
-  
-</div>
-  </template>
-  
-  <script>
-  export default {
-    methods: {
+<script>
+export default {
+  methods: {
     logout() {
-      // Logout from
+      // Logout action
       this.$store.dispatch('logout');
     }
   }
-  };
-  </script>
-  
-  <style scoped>
-  .navbar-nav {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .navbar-nav .nav-item {
-    flex: 1; /* Each nav item takes equal space */
-    text-align: center; 
-    font-family:monospace;
-    font-size:20px;
-    font-weight: 200;/* Center aligns the text */
-  }
-  
-  /* Add more styles as needed */
-  
-  .modals {
-    display: flex;
-    justify-content: space-around;
-    background: #070707;
-    padding: 3px;
-  }
-  
-  .modals a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-  }
-  
-  .modals a:hover {
-    text-decoration: underline;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.navbar-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navbar-nav .nav-item {
+  flex: 1; /* Each nav item takes equal space */
+  text-align: center; 
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: 200; /* Center aligns the text */
+}
+
+/* Add more styles as needed */
+
+.modals {
+  display: flex;
+  justify-content: space-around;
+  background: #070707;
+  padding: 3px;
+}
+
+.modals a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.modals a:hover {
+  text-decoration: underline;
+}
+</style>

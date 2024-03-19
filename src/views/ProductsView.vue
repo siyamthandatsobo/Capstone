@@ -21,6 +21,7 @@
         <div class="scrollable-container horizontal-scroll">
           <div class="product-grid">
             <div v-for="product in filteredProducts" :key="product.prodID" class="product-card">
+              {{ $store.state.loggedIn}}
               <!-- Your product content here -->
               <img :src="product.prodUrl" class="product-img" alt="Product Image">
               <div class="product-info">
@@ -28,7 +29,7 @@
                 <p class="product-price">Price: R{{ product.amount }}</p>
                 <p class="product-category">{{ product.category }}</p>
                 <input v-model="product.quantity" type="number" min="1" max="10" class="form-control product-quantity" />
-                <button @click="addToCart(product)" class="btn btn-primary product-btn">Add to Cart</button>
+                <button @click.prevent="addToCart(product)" class="btn btn-primary product-btn">Add to Cart</button>
                 <router-link v-if="isLoggedIn" :to="{ name: 'ProductDetails', params: { prodID: product.prodID }}" class="btn btn-secondary product-btn">View Details</router-link>
               </div>
             </div>
@@ -70,7 +71,7 @@
                 <p class="product-price">Price: R{{ product.amount }}</p>
                 <p class="product-category">{{ product.category }}</p>
                 <input v-model="product.quantity" type="number" min="1" max="10" class="form-control product-quantity" />
-                <button @click="addToCart(product)" class="btn btn-primary product-btn">Add to Cart</button>
+                <button @click.prevent="addToCart(product)" class="btn btn-primary product-btn">Add to Cart</button>
                 <router-link v-if="isLoggedIn" :to="{ name: 'ProductDetails', params: { prodID: product.prodID }}" class="btn btn-secondary product-btn">View Details</router-link>
               </div>
             </div>

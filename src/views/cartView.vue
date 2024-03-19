@@ -30,7 +30,7 @@
           <td>{{ cartItem.totalPrice }}</td>
           <td><img :src="cartItem.prodUrl" alt="Product Image" width="100px" height="100px"></td>
           <td>
-            <button @click="remove(cartItem.prodID)">Remove</button>
+            <button @click.prevent="remove(cartItem.prodID)">Remove</button>
           </td>
         </tr>
       </tbody>

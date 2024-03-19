@@ -113,11 +113,12 @@ footer {
 }
   </style>
   <script>
+  import VueCookies from 'vue-cookies';
   export default {
     computed: {
       isAdmin() {
         // Check if the user is logged in and has admin role
-        return this.$store.state.user && this.$store.state.user.userRole === 'Admin';
+        return VueCookies.get('userRole') === 'Admin';
       }
     }
   }

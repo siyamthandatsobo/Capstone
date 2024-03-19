@@ -17,26 +17,17 @@ export default createStore({
     product: null,
     cart: [],
     Cart:[],
-    loggedIn: false,
+    
     productQuantity: 1,
     searchQuery: '',
+    token: VueCookies.get('jwt') || null, // Initialize token from cookie
+    loggedIn: !!VueCookies.get('jwt'),
+    
   },
   getters: {
-    filteredProducts(state) {
-      const query = state.searchQuery.toLowerCase().trim();
-      if (!query) {
-        return state.products;
-      } else {
-        return state.products.filter(product => {
-          return (
-            product.prodName.toLowerCase().includes(query) ||
-            product.category.toLowerCase().includes(query)
-          );
-        });
-      }
-    }
+    isLoggedIn: state => !!state.token,
+    currentUser: state => state.user,
   },
-  
   mutations: {
     setProducts(state, payload) {
       state.Products = payload;
@@ -53,10 +44,11 @@ export default createStore({
     setUsers(state, users) {
       state.users = users;
     },
-
     setUser(state, user) {
       state.user = user;
       state.loggedIn = !!user;
+      console.log('loggedIn:', state.loggedIn); // Add this line to log the value of loggedIn
+
     },
     setProductQuantity(state, quantity) {
       state.productQuantity = quantity;
@@ -64,9 +56,19 @@ export default createStore({
     removeFromCart(state, prodID) {
       state.cart = state.cart.filter(item => item.id !== prodID);
     },
-    setSearchQuery(state, query) {
-      state.searchQuery = query;
-    }
+    setToken(state, token) {
+      state.token = token;
+    },
+    setUserCookie(state, user) {
+      VueCookies.set('user', JSON.stringify(user)); // Set user information in cookie
+    },
+
+    setUserFromCookie(state) {
+      const userCookie = VueCookies.get('user');
+      if (userCookie) {
+        state.user = JSON.parse(userCookie);
+      }
+    },
   },
   actions: {
     async getProducts({ commit }) {
@@ -117,10 +119,11 @@ export default createStore({
         sweet('Error', 'Failed to delete product', 'error');
       }
     },
-    async addProductToCart({ state }, { prodID, quantity }) {
+    async addProductToCart({ commit }, { prodID, quantity }) {
       try {
-        if (!state.loggedIn) {
-          console.error('User not logged in');
+        const userID = VueCookies.get('userID'); // Retrieve user ID from cookie
+        if (!userID) {
+          console.error('User ID not found in cookie');
           return;
         }
     
@@ -133,7 +136,7 @@ export default createStore({
         // Add the product to the cart database table
         await axios.post(
           `${baseUrl}/order`,
-          { prodID, userID: state.user.userID, quantity }
+          { prodID, userID, quantity } // Use userID from cookie
         );
     
         sweet('Success', 'Product added to cart successfully!', 'success');
@@ -143,6 +146,7 @@ export default createStore({
         sweet('Error', 'Failed to add product to cart', 'error');
       }
     },
+    
     
     async deleteProdFromCart({ commit, state }, prodID) {
       try {
@@ -182,46 +186,75 @@ export default createStore({
         });
       }
     },
-    
     async login(context, userLogin) {
       try {
-        let { data } = await axios.post(baseUrl + '/login', userLogin);
-        const { user, token } = data;
-        
-        // Save user information and token in cookies
-        VueCookies.set('user', JSON.stringify(user));
+        const { data } = await axios.post(baseUrl + '/login', userLogin);
+        const { token, user } = data; // Extract token and user information from response data
+  
+        // Save token and user information in Vuex state
+        context.commit('setToken', token);
+        VueCookies.set('setUserCookie', JSON.stringify(user));
+  
+        // Save token and user information in cookies
         VueCookies.set('jwt', token);
-        
-        // Update Vuex store with user info
-        context.commit('setUser', user);
-        
-        sweet('Success', 'Login successful!', 'success');
-        await router.push('/');
+        VueCookies.set('userRole', user.userRole);
+        VueCookies.set('userID', user.userID);
+        VueCookies.set('user', JSON.stringify(user));
+
+  
+        // Show success message using SweetAlert
+        sweet('Success', data.msg, 'success');
+  
+        await router.push('/'); // Navigate to home page
       } catch (error) {
         console.error('Error logging in:', error);
+        // Show error message using SweetAlert
         sweet('Error', 'Failed to log in', 'error');
       }
-    },
+    },    
     
-    
-   
-  
+    // async login({ commit }, userLogin) {
+    //   try {
+    //     const { data } = await axios.post(baseUrl + '/login', userLogin);
+    //     const { token } = data;
+
+    //     // Save token in Vuex state
+    //     commit('setToken', token);
+    //     commit('setLoggedIn', true); // Set loggedIn to true after successful login
+
+    //     // Save token in cookie
+    //     VueCookies.set('jwt', token, { expires: '7d' }); // Set cookie expiration as needed
+
+    //     sweet('Success', 'Login successful!', 'success');
+    //     await router.push('/logout');
+    //   } catch (error) {
+    //     console.error('Error logging in:', error);
+    //     sweet('Error', 'Failed to log in', 'error');
+    //   }
+    // },
     async logout(context) {
       try {
-        VueCookies.remove('user');
-        VueCookies.remove('jwt');
-        context.commit('setUser', null);
-
-        sweet('Success', 'Logout successful!', 'success');
+        VueCookies.remove('jwt'); // Remove JWT token from cookie
+        VueCookies.remove('userID'); // Remove user information from cookie
+        VueCookies.remove('userRole'); // Remove userRole information from cookie
+  
+        // Clear token and user information from Vuex state
+        context.commit('setToken', null);
+        context.commit('setUserCookie', null); // Set user information in cookie
+  
+        // Show success message using SweetAlert
+        sweet('Success', 'Logged out successfully!', 'success');
         window.location.reload();
-        await router.push('/');
-       
-
+        await router.push('/'); // Navigate to logout page
       } catch (error) {
         console.error('Error logging out:', error);
+        // Show error message using SweetAlert
         sweet('Error', 'Failed to log out', 'error');
       }
     },
+  
+  
+  
     async getProductById({ commit }, prodID) {
   console.log('Product ID:', prodID);
 
@@ -288,6 +321,19 @@ async addUser({ commit }, newuser) {
     sweet('Error', 'Failed to add User', 'error');
   }
 }
-  },
-  modules: {},
+},
+modules: {},
+// created() {
+//   const tokenCookie = VueCookies.get('jwt');
+//   const userCookie = VueCookies.get('user');
+
+//   if (tokenCookie) {
+//     this.commit('setToken', tokenCookie);
+//     this.state.loggedIn = true; // Set loggedIn to true if token exists
+//   }
+
+//   if (userCookie) {
+//     this.commit('setUser', JSON.parse(userCookie));
+//   }
+// }
 });
