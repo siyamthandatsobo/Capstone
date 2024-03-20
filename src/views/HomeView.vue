@@ -2,11 +2,11 @@
   <div>
 
    
-    <div class="viewport">
+    <div class="viewport ">
     <div class="container">
       <div class="row flex-lg-row flex-md-row-reverse flex-column-reverse">
         <div class="col-lg-6 col-md-12 col-sm-12">
-          <div class="viewpimage">
+          <div class="viewpimage  ">
             <p class="text">Royal Footwear New 415 Air MAX NONTENDO</p>
             <button class="btn text-white bg-dark">Check Out More</button>
           </div>
@@ -65,6 +65,29 @@
   /* width: 100vw; */
   padding:3px;
   /* Adjust padding and other styles as needed */
+}
+@keyframes shoeBackgroundAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #2a2929, #928880, #5c4080);
+  background-size: 300% 100%; /* Make background larger than viewport */
+  animation: shoeBackgroundAnimation 20s infinite; /* Adjust animation duration */
+  z-index: -1; /* Ensure background appears behind content */
 }
 .category:hover{
   transform: scale(1.2);
