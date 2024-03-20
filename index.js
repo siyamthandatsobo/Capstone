@@ -17,7 +17,15 @@ const app = express();//initialise the server
 app.use(cors({
     origin:'http://localhost:8080',
     credentials:true
-})) //middlware cross origin resource sharing
+}))
+ //middlware cross origin resource sharing
+ app.use((req,res,next) =>{
+    res.header("Access-Control-Allow-Credentials","true");
+    res.header("Access-Control-Allow-Methods","*");
+    res.header("Access-Control-Request-Methods","*");
+    res.header("Access-Control-Allow-Headers","Authorization");
+    next();
+ })
 app.use(express.json()) //newer version comes with body parser 
 app.use(cookieparser())
 app.use(express.static('views')) 
