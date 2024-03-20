@@ -62,10 +62,7 @@ const auth = async (req, res, next) => {
 
             const token = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '2h' });
             console.log(token);
-            res.cookie('jwt', token, {
-                sameSite: 'Lax', // You can set it to 'strict' or 'lax' depending on your requirements
-                // Other cookie options...
-              });
+            res.cookie('jwt', token);
             res.json({
                 msg: 'You have logged in',
                 user: userInfo,
