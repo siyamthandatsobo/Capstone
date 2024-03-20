@@ -34,7 +34,11 @@
           </td>
         </tr>
       </tbody>
+
       </table>
+      <div class="total-price">
+      Total Price: R{{  totalPrice.toFixed(2)}}
+    </div>
   </div>
 </template>
 
@@ -60,6 +64,12 @@
   max-width: 100%;
   height: auto;
 }
+.total-price {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
 </style>
 <script>
 // Inside your CartView component script
@@ -67,6 +77,9 @@ export default {
   computed: {
     cart() {
       return this.$store.state.cart;
+    },
+    totalPrice() {
+      return this.cart.reduce((total, item) => total + parseFloat(item.totalPrice), 0);
     },
   },
   methods: {

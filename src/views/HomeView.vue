@@ -2,32 +2,28 @@
   <div>
 
    
-  <div class="viewport">
-    {{ $store.state.loggedIn}}
-<div class="container">
-
-  <div class="row"  >
-    <div class="col  viewpimage">
-        <p class="text">Royal Footwear New 415 Air MAX NONTENDO </p>
-
-        <button class=" btn text-white bg-dark">Check Out More</button>
-      
+    <div class="viewport">
+    <div class="container">
+      <div class="row flex-lg-row flex-md-row-reverse flex-column-reverse">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+          <div class="viewpimage">
+            <p class="text">Royal Footwear New 415 Air MAX NONTENDO</p>
+            <button class="btn text-white bg-dark">Check Out More</button>
+          </div>
+        </div>
+        <div class="col-lg-6 ">
+          <img class="viewSneaker img-fluid d-flex" src="https://i.ibb.co/rQKJmYc/usama-akram-s-g-YAb-QTo-Xk-unsplash-removebg-preview.png" height="400px">
+        </div>
       </div>
-      <div class="col  viewpimage ">
-        <img class="viewSneaker img-fluid d-flex" src="https://i.ibb.co/rQKJmYc/usama-akram-s-g-YAb-QTo-Xk-unsplash-removebg-preview.png" height="400px">
-      </div>
-
     </div>
   </div>
-
-  </div>
   <div class="container-fluid">
-    <div class="row sweat">
+    <div class="row sweat flex-lg-row  flex-md-row-reverse flex-column-reverse">
 
-<div class="secondDiv col-6 ">
+<div class="secondDiv col-lg-6 ">
   
 </div>
-<div class="col-6">
+<div class="col-lg-6">
   
   <h4 class="display-5 dedication">You dont sweat by chance You sweat through Dedication !!!</h4>
   <button class="lead">More footwear</button>
@@ -162,6 +158,35 @@
   font-size:25px;
 }
 
+@media (max-width: 768px) {
+  /* Styles for screens smaller than 768px */
+  .container {
+    padding: 0 60px; /* Adjust padding as needed */
+   }
+  
+  .viewSneaker {
+    width: 60%;
+    margin-left:10%; /* Set width to 100% for smaller screens */
+  } 
+
+  .text {
+    padding-top: 2px; /* Reduce padding for smaller screens */
+    font-size: 35px; 
+  } 
+}
+
+@media (max-width: 576px) {
+  /* Styles for screens smaller than 576px */
+  .text {
+    padding-top: 30px; /* Further reduce padding for smaller screens */
+    font-size: 20px; /* Further adjust font size for smaller screens */
+  }
+  .viewSneaker {
+    width: 50%;
+    margin-left:0; /* Set width to 100% for smaller screens */
+  }
+
+}
 /* Add more styles as needed */
 </style>
 

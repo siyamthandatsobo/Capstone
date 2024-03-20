@@ -21,7 +21,6 @@
         <div class="scrollable-container horizontal-scroll">
           <div class="product-grid">
             <div v-for="product in filteredProducts" :key="product.prodID" class="product-card">
-              {{ $store.state.loggedIn}}
               <!-- Your product content here -->
               <img :src="product.prodUrl" class="product-img" alt="Product Image">
               <div class="product-info">
