@@ -20,7 +20,7 @@
       <div class="footer-column">
         <h4>SUPPORT</h4>
         <ul>
-          <li><a href="#">FAQ</a></li>
+          <li><router-link to="/faq">FAQ</router-link></li>
           <li v-if="isAdmin"><router-link to="/admin">Admin</router-link></li>
         </ul>
       </div>
@@ -94,7 +94,10 @@
     </li>
   </ul>
       </div>
+      <div>&copy; <span id="copyright-year"></span> SiyamthandaTsobo. All rights reserved.</div>
+
     </div>
+
   </footer>
 </template>
 
@@ -251,7 +254,24 @@ footer {
         // Check if the user is logged in and has admin role
         return VueCookies.get('userRole') === 'Admin';
       }
+    },
+    methods: {
+    updateCopyrightYear() {
+      const currentYear = new Date().getFullYear();
+      const copyrightYearElement = document.getElementById('copyright-year');
+      if (copyrightYearElement) {
+        copyrightYearElement.textContent = currentYear;
+      }
     }
+  },
+  mounted() {
+    // Call the function when the component is mounted to set the initial copyright year
+    this.updateCopyrightYear();
+
+    // Update the year periodically (e.g., every January 1st) to ensure it stays current
+    setInterval(this.updateCopyrightYear, 1000 * 60 * 60 * 24); // Update every day
+  }
+
   }
   </script>
   
