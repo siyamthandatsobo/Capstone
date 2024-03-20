@@ -46,7 +46,7 @@
       </div>
       <!-- You can add more input fields for other properties if needed -->
 
-      <button class="btn bg-dark text-white" @click="signup()">Sign Up</button>
+      <button class="btn bg-dark text-white" @click="addUser()">Sign Up</button>
       <span class="bottom_text">Already have an account? <label for="register_toggle" class="swtich">Sign In</label></span>
     </div>
       </div>

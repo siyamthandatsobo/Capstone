@@ -7,7 +7,7 @@ import VueCookies from 'vue-cookies';
 
 // Set up Axios configurations
 axios.defaults.withCredentials = true;
-const baseUrl = 'http://localhost:9000';
+const baseUrl = 'https://capstone-opj5.onrender.com';
 
 export default createStore({
   state: {
