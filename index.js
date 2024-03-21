@@ -15,7 +15,7 @@ const PORT = process.env.PORT
 
 const app = express();//initialise the server
 app.use(cors({
-    origin:'https://capstone-8566a.web.app',
+    origin:' http://localhost:8080',
     credentials:true
 }))
  //middlware cross origin resource sharing
