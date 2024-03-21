@@ -54,31 +54,81 @@ export default{
         }
       },
    
-    getOrder:async(req,res)=>{
-    res.send(await getOrder(+req.params.orderID))
-},
-getOrdersByUser: async (req, res) => {
-    const userID = req.user.userID; // Get userID from the authenticated user
-    const orders = await getOrdersByUserID(userID);
-    res.json(orders);
-},
+      getOrder: async (req, res) => {
+        try {
+            const orderID = +req.params.orderID;
+            const order = await getOrder(orderID);
+    
+            // Check if the order exists
+            if (!order) {
+                return res.status(404).json({ message: `Order with ID ${orderID} not found` });
+            }
+    
+            // Respond with the order details
+            res.json(order);
+        } catch (error) {
+            console.error('Error fetching order:', error);
+            res.sendStatus(500);
+        }
+    },
+    getOrdersByUser: async (req, res) => {
+      try {
+          const userID = req.user.userID; // Get userID from the authenticated user
+          const orders = await getOrdersByUserID(userID);
+  
+          // Check if there are any orders for the user
+          if (!orders || orders.length === 0) {
+              return res.status(404).json({ message: `No orders found for user ID ${userID}` });
+          }
+  
+          // Respond with the user's orders
+          res.json(orders);
+      } catch (error) {
+          console.error('Error fetching user orders:', error);
+          res.sendStatus(500);
+      }
+  },
 getAll:async(req,res)=>{
   res.send(await getALLOrders())
 },
 deleteOrder: async (req, res) => {
-    const prodID = req.params.prodID;
-    res.send(await deleteOrder(prodID));
-    console.log('Deleting order with ID:', prodID);
-  },
-    editOrder:async(req,res)=>{
-        console.log(+req.params.orderID);
-        const [order] = await getOrder(+req.params.orderID)
-        let {quantity}=req.body
-        quantity ? quantity=quantity: {quantity}=order
-        console.log(order) //in one line
-        const edit=await editOrderQuantity(quantity,+req.params.orderID)
-        res.json(await getOrder())
+  try {
+      const orderID = req.params.orderID;
+      const deletedOrder = await deleteOrder(orderID);
+
+      // Check if the order was successfully deleted
+      if (!deletedOrder) {
+          return res.status(404).json({ message: `Order with ID ${orderID} not found` });
+      }
+
+      // Respond with a success message
+      res.json({ message: `Order with ID ${orderID} has been deleted successfully` });
+  } catch (error) {
+      console.error('Error deleting order:', error);
+      res.sendStatus(500);
+  }
+,
+  editOrder: async (req, res) => {
+    try {
+        const orderID = +req.params.orderID;
+        const { quantity } = req.body;
+
+        // Retrieve the current order details
+        const [order] = await getOrder(orderID);
+
+        // If quantity is provided, update the quantity; otherwise, keep the existing quantity
+        const updatedQuantity = quantity ? quantity : order.quantity;
+
+        // Update the order quantity
+        const edit = await editOrderQuantity(updatedQuantity, orderID);
+
+        // Respond with the updated order
+        res.json(await getOrder(orderID));
+    } catch (error) {
+        console.error('Error editing order:', error);
+        res.sendStatus(500);
     }
+}
     
 
 }
