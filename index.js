@@ -66,7 +66,6 @@ const auth = async (req, res, next) => {
                 secure: false, // Set to true if using HTTPS
                 sameSite: 'None', // For cross-site requests
                 httpOnly: true, // For security
-                domain: 'http://localhost:8080', // Set to your domain
                 path: '/', // Set to the appropriate path
             });
             res.json({
