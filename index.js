@@ -62,7 +62,13 @@ const auth = async (req, res, next) => {
 
             const token = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '2h' });
             console.log(token);
-            res.cookie('jwt', token);
+            res.cookie('jwt', token, {
+                secure: false, // Set to true if using HTTPS
+                sameSite: 'None', // For cross-site requests
+                httpOnly: true, // For security
+                domain: 'http://localhost:8080', // Set to your domain
+                path: '/', // Set to the appropriate path
+            });
             res.json({
                 msg: 'You have logged in',
                 user: userInfo,
