@@ -1,7 +1,7 @@
 import express from 'express';
 import cookieparser from 'cookie-parser';
-import cors from 'cors';
 import { config } from 'dotenv';
+import cors from 'cors';
 import { checkUser } from './model/database.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -11,9 +11,9 @@ import orderRouter from './routes/orders.js';
 import { authenticate } from './middleware/middleware.js';
 
 config();
-const app = express();//initialise the server
 const PORT = process.env.PORT
 
+const app = express();//initialise the server
 app.use(cors({
     origin:'https://capstone-8566a.web.app',
     credentials:true
@@ -63,10 +63,15 @@ const auth = async (req, res, next) => {
             const token = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '2h' });
             console.log(token);
             res.cookie('jwt', token, {
+                httpOnly: true,
                 secure: true, // set to false if you're not using https
                 sameSite: 'None'
             });
-           
+            res.json({
+                msg: 'You have logged in',
+                user: userInfo,
+                token: token,
+            });
         } else {
             res.status(401).json({
                 msg: 'Invalid credentials',
