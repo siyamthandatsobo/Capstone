@@ -107,7 +107,7 @@ deleteOrder: async (req, res) => {
       console.error('Error deleting order:', error);
       res.sendStatus(500);
   }
-,
+},
   editOrder: async (req, res) => {
     try {
         const orderID = +req.params.orderID;
