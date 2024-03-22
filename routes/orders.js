@@ -21,9 +21,9 @@ router
     router
     .route('/user')
     .get(authenticate, controller.getOrdersByUser)
-    
+
     router
     .route('/user/delete')
-    .get(authenticate, controller.deleteOrderByUser)
+    .delete(authenticate, controller.deleteOrderByUser)
         
         export default router
