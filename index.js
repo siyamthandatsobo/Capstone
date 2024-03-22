@@ -15,7 +15,7 @@ const PORT = process.env.PORT
 
 const app = express();//initialise the server
 app.use(cors({
-    origin:' https://capstone-8566a.firebaseapp.com',
+    origin:'https://capstone-8566a.firebaseapp.com',
     credentials:true
 }))
  //middlware cross origin resource sharing
