@@ -50,13 +50,10 @@
             question: "How can I contact customer support?",
             answer: "You can reach our customer support team via email at support@royalfootwear.com or through our website's contact form. Our team is available to assist you with any questions or concerns you may have."
           },
-          {
-            question: "?",
-            answer: ""
-          },
+         
           {
             question: "How can I contact customer support?",
-            answer: ""
+            answer: "You can contact us on siyamthandatsobo@gmail.com/0672265196"
           }
           // Add more FAQ items here
         ]

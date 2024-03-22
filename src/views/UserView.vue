@@ -1,7 +1,73 @@
 <template>
     <div class="background">
       <h4 class="display-5 text-center text-white py-2">Welcome Back</h4>
+  
+      <div class="buttons-container d-flex justify-content-center mb-3">
+      <!-- Delete button -->
+      <button class="btn bg-light me-2" @click="deleteUser(user.userID)">Delete</button>
+
+      <!-- Edit button -->
       <div>
+        <img
+          src="https://i.ibb.co/JxK7ptg/product-design.png"
+          alt="Edit"
+          width="30"
+          height="30"
+          class="align img img-fluid"
+          @click="editUser(user)"
+          data-bs-toggle="modal"
+          :data-bs-target="userModalTarget"
+        />
+      </div>
+    </div>
+      <div>
+        <!-- Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h1 class="display-3 text-center">User</h1>
+        <div class="product-inputs container styling">
+      <div>
+      <label for="userLastName">User Last Name</label>
+      <input type="text" id="userLastName" v-model="userPayload.lastName" required>
+    </div>
+    <div>
+      <label for="userName">User Name</label>
+      <input type="text" id="userName" v-model="userPayload.firstName" required>
+
+</div>
+<div>
+
+
+    <label for="userAge">User Age</label>
+    <input type="number" id="userAge" v-model="userPayload.userAge" required>
+  </div>
+  <div>
+    <label for="userGender">Gender</label>
+    <input type="text" id="userGender" v-model="userPayload.gender" required>
+  </div>
+    
+    <div>
+
+  
+    <label for="userEmail">Email</label>
+    <input type="text" id="userEmail" v-model="userPayload.emailAdd" required>
+  </div>
+    
+    
+    <br><br>
+    
+  </div>
+  <button class="btn btn-success" @click="updateUser">Update your profile</button>
+</div>
+</div>
+</div>
+</div>
         <div class="card">
           <div class="profileimage">
             <svg class="pfp" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 122.88">
@@ -14,6 +80,7 @@
             {{ user?.firstName }}, {{ user?.lastName }}
           </div>
         </div>
+       
         <br><br>
         <div>
           <ul class="list-group list-group-flush">
@@ -22,6 +89,7 @@
             <li class="list-group-item">UserID: {{ user?.userID }}</li>
           </ul>
         </div>
+        
       </div>
     </div>
   </template>
@@ -32,8 +100,53 @@
   export default {
     data() {
       return {
-        user: null
+        user: null,
+        userPayload: {
+      firstName: null,
+      lastName: null,
+      userAge: null,
+      gender: null,
+      emailAdd: null,
+      
+    },
+    selectedUser: null,
+    userModalTarget: '#userModal',
       };
+    },
+    methods:{
+      deleteUser(userID) {
+      this.$store.dispatch("deleteUser", userID);
+    },
+    editUser(user) {
+    this.selectedUser = { ...user };
+    
+    this.userPayload = { ...this.selectedUser };
+    this.userModalTarget = '#userModal'; // Set the target for the user modal
+
+  },
+  updateUser() {
+    if (this.selectedUser) {
+      const updatedUser = {
+        id: this.selectedUser.userID,
+        data: { ...this.userPayload },
+      };
+      this.$store.dispatch("updateUser", updatedUser);
+
+      this.selectedUser = null;
+      this.userPayload = {
+        firstName: null,
+  lastName: null,
+  userAge: null,
+  gender: null,
+  emailAdd: null,
+  userRole: null,
+  userPass: null
+      };
+      this.userModalTarget = ''; // Close the user modal
+
+    }
+  },
+  
     },
     mounted() {
       const userCookie = VueCookies.get('setUserCookie');
@@ -60,6 +173,11 @@
               -5px -5px 30px rgb(57, 57, 57);
   margin-left: 40%;
 }
+.styling{
+    border: 2px solid black;
+    background:#212529;
+    color:white;
+}
 
 .list-group, .list-group-item {
   justify-content: center;
@@ -69,6 +187,13 @@
   color: red;
   width: max-content;
   margin-left: 35%;
+}
+.align{
+  margin-left:40%;
+}
+.buttons-container {
+  display: flex;
+  justify-content: center;
 }
 
 .background {
@@ -80,8 +205,14 @@
                     linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
   background-size: 55px 55px;
   font-family: 'Courier New', Courier, monospace;
-}
+  position: relative; /* Ensure position:relative is applied to establish a positioning context */
 
+}
+.product-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 .profileimage {
   background-color: transparent;
   border: none;

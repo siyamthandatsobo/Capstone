@@ -181,7 +181,7 @@ export default {
 }
 .product-img {
   width: 100%;
-  max-height: 200px; /* Adjust image height as needed */
+  max-height: 300px; /* Adjust image height as needed */
   object-fit: cover;
   transition: transform 0.3s
 }

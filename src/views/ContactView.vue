@@ -4,17 +4,18 @@
     <h4 class="text-center text-white">Reach out us</h4>
     <div class="container-contact container">
         <div class="left">
-            <form class="form">
+            <form class="form" action="https://formspree.io/f/xnqebwgj"
+  method="POST">
                 <div class="input-block">
-                    <input class="input" type="text" id="email" required="">
+                    <input class="input" type="email" id="email" name="email" required="">
                     <label for="email">Email</label>
                 </div>
                 <div class="input-block">
-                    <input class="input" type="text" id="text" required="">
+                    <input class="input" type="text" id="text" name="text" required="">
                     <label for="text">Name</label>
                 </div>
                 <div class="input-block">
-        <textarea class="input" id="message" required=""></textarea>
+        <textarea class="input" id="message" required="" name="message"></textarea>
         <label for="message">Message</label>
     </div>
                 <div class="input-block">
@@ -168,7 +169,7 @@ button {
   margin: 10px auto;
   width: 80%;
   display: block;
-  color: #425981;
+  color: #fcfdfe;
   font-weight: 500;
   font-size: 1.1em;
 }
@@ -189,7 +190,7 @@ label {
   display: block;
   margin: 5px 0 10px 0;
   margin-left: 35px;
-  color: #5e7eb6;
+  color: #eef0f3;
   font-size: 0.9em;
 }
 
@@ -207,7 +208,7 @@ button {
 }
 
 a {
-  color: #5e7eb6;
+  color: #f5f7fa;
 }
 
 .input {

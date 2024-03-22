@@ -1,9 +1,13 @@
 <!-- Inside your CartView component template -->
 <template>
-  <div>
+  <div class="container">
     <h2 class="display-5 text-center pt-5">Your Cart</h2>
+<div class="table-container">
 
-    <table class="cart-table container">
+
+ 
+
+    <table class="cart-table container ">
       <thead>
         <tr>
           <th>Order ID</th>
@@ -30,14 +34,19 @@
           <td>{{ cartItem.totalPrice }}</td>
           <td><img :src="cartItem.prodUrl" alt="Product Image" width="100px" height="100px"></td>
           <td>
-            <button @click.prevent="remove(cartItem.prodID)">Remove</button>
+            <button @click="remove(cartItem.prodID)">Remove</button>
           </td>
         </tr>
       </tbody>
 
       </table>
+    </div>
       <div class="total-price">
       Total Price: R{{  totalPrice.toFixed(2)}}
+    </div>
+    <div>
+      <button @click="clearCart" class="btn btn-danger">Clear Cart</button>
+
     </div>
   </div>
 </template>
@@ -59,7 +68,10 @@
 .cart-table th {
   background-color: #f2f2f2;
 }
-
+.table-container {
+  overflow-x: auto;
+  max-width: 100%; /* Ensure the container fills its parent */
+}
 .cart-table img {
   max-width: 100%;
   height: auto;
@@ -72,6 +84,8 @@
 }
 </style>
 <script>
+import VueCookies from 'vue-cookies';
+import sweet from 'sweetalert';
 // Inside your CartView component script
 export default {
   computed: {
@@ -86,9 +100,27 @@ export default {
     remove(prodID) { 
       this.$store.dispatch('deleteProdFromCart', prodID);
     },
+    clearCart() {
+      const userID = VueCookies.get('userID'); // Retrieve user ID from cookie
+      if (!userID) {
+        console.error('User ID not found in cookie');
+        return;
+      }
+
+      // Dispatch the clearCart action
+      this.$store.dispatch('clearCart', userID)
+        .then(() => {
+          sweet('Success', 'Cart cleared successfully!', 'success');
+        })
+        .catch(error => {
+          console.error('Error clearing cart:', error);
+          sweet('Error', 'Failed to clear cart', 'error');
+        });
+    }
+  
   },
-  mounted() {
-    this.$store.dispatch('getOrderItemsByUser'); // Dispatch the renamed action
+  mounted(userID) {
+    this.$store.dispatch('getOrderItemsByUser',userID); // Dispatch the renamed action
   },
 };
 </script>

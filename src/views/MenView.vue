@@ -23,6 +23,7 @@
   
         <!-- Product Display -->
         <h2 class="display-5">Products</h2>
+        <div class="scrollable-container horizontal-scroll">
         <div class="product-grid">
             <div v-for="product in filteredProducts" :key="product.prodID" class="product-card">
               <!-- Your product content here -->
@@ -38,6 +39,7 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
   </template>
   
@@ -54,21 +56,21 @@
         return this.$store.state.Products || [];
       },
       filteredProducts() {
-      const selectedCategory = this.$store.state.selectedCategory;
-      const query = this.searchQuery.trim().toLowerCase(); // Convert search query to lowercase
+  const selectedCategory = this.$store.state.selectedCategory;
+  const query = this.searchQuery.trim().toLowerCase(); // Convert search query to lowercase
 
-      // If no category is selected and no search query, return all products
-      if (!selectedCategory && !query) {
-        return this.$store.state.Products || [];
-      }
+  // If Products state is null or undefined, return an empty array
+  if (!this.$store.state.Products) {
+    return [];
+  }
 
-      // Filter products based on selected category and search query
-      return this.$store.state.Products.filter(product => {
-        const categoryMatch = !selectedCategory || product.category.toLowerCase() === selectedCategory.toLowerCase();
-        const queryMatch = !query || product.prodName.toLowerCase().includes(query);
+  // Filter products based on selected category and search query
+  return this.$store.state.Products.filter(product => {
+    const categoryMatch = !selectedCategory || product.category.toLowerCase() === selectedCategory.toLowerCase();
+    const queryMatch = !query || product.prodName.toLowerCase().includes(query);
 
-        return categoryMatch && queryMatch;
-      });
+    return categoryMatch && queryMatch;
+  });
     },
     isLoggedIn() {
       return this.$store.state.loggedIn; // Assuming isLoggedIn is a boolean in your Vuex store

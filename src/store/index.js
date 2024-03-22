@@ -42,6 +42,9 @@ export default createStore({
     setCartAll(state, payload) {
       state.Cart = payload;
     },
+    clearCart(state) {
+      state.cart = []; // Clear the cart array
+    },
     setUsers(state, users) {
       state.users = users;
     },
@@ -64,6 +67,7 @@ export default createStore({
     setUserCookie(state, user) {
       VueCookies.set('user', JSON.stringify(user)); // Set user information in cookie
     },
+    
 
     setUserFromCookie(state) {
       const userCookie = VueCookies.get('user');
@@ -100,6 +104,22 @@ export default createStore({
         commit('setCart', data);
       } catch (error) {
         console.error('Error getting order items by user:', error);
+      }
+    },
+    async clearCart({ commit },userID) {
+      try {
+        // Call the mutation to clear the cart
+        
+        // Make a request to your backend to clear the cart data
+        await axios.delete(`${baseUrl}/order/user/${userID}`);
+        commit('clearCart');
+        sweet('Success', 'Cart cleared successfully!', 'success');
+
+        
+        // Optionally, you can show a success message or handle other logic here
+      } catch (error) {
+        console.error('Error clearing cart:', error);
+        // Handle errors if necessary
       }
     },
   
@@ -156,9 +176,8 @@ export default createStore({
     async deleteProdFromCart({ commit, state }, prodID) {
       try {
         await axios.delete(`${baseUrl}/order/${prodID}`);
-        commit('removeFromCart', prodID); // Create a mutation to remove the item from the cart
+        state.cart = state.cart.filter(item => item.prodID !== prodID); // Update state directly
         sweet('Success', 'Product removed from cart successfully!', 'success');
-       
       } catch (error) {
         console.error('Error deleting product:', error);
         sweet('Error', 'Failed to remove product from cart', 'error');
@@ -210,10 +229,10 @@ export default createStore({
   
         // Show success message using SweetAlert
         sweet('Success', data.msg, 'success');
-        window.location.reload(); // You might want to update the state instead of reloading the entire page
-  
-  
+        
+        
         await router.push('/'); // Navigate to home page
+        window.location.reload(); // You might want to update the state instead of reloading the entire page
       } catch (error) {
         console.error('Error logging in:', error);
         // Show error message using SweetAlert
