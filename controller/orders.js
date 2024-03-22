@@ -1,4 +1,4 @@
-import {addOrder,getOrder,deleteOrder,editOrderQuantity,getOrdersByUserID, getALLOrders,deleteOrderByUserID} from '../model/database.js'
+import {addOrder,getOrder,deleteOrder,editOrderQuantity,getOrdersByUserID, getALLOrders,deleteOrdersByUserID} from '../model/database.js'
 import jwt from 'jsonwebtoken';
 
 export default{
@@ -135,7 +135,7 @@ deleteOrderByUser: async (req, res) => {
     const userID = req.params.userID;
 
     // Call the function to delete orders by user ID
-    const deletedOrders = await deleteOrderByUserID(userID);
+    const deletedOrders = await deleteOrdersByUserID(userID);
 
     // Check if any orders were deleted
     if (!deletedOrders || deletedOrders.length === 0) {
