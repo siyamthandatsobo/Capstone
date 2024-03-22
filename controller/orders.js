@@ -1,4 +1,4 @@
-import {addOrder,getOrder,deleteOrder,editOrderQuantity,getOrdersByUserID, getALLOrders} from '../model/database.js'
+import {addOrder,getOrder,deleteOrder,editOrderQuantity,getOrdersByUserID, getALLOrders,deleteOrderByUserID} from '../model/database.js'
 import jwt from 'jsonwebtoken';
 
 export default{
@@ -128,7 +128,26 @@ deleteOrder: async (req, res) => {
         console.error('Error editing order:', error);
         res.sendStatus(500);
     }
-}
+},
     
+deleteOrderByUser: async (req, res) => {
+  try {
+    const userID = req.params.userID;
 
+    // Call the function to delete orders by user ID
+    const deletedOrders = await deleteOrderByUserID(userID);
+
+    // Check if any orders were deleted
+    if (!deletedOrders || deletedOrders.length === 0) {
+      return res.status(404).json({ message: `No orders found for user ID ${userID}` });
+    }
+
+    // Respond with a success message
+    res.json({ message: `Orders for user ID ${userID} have been deleted successfully` });
+  } catch (error) {
+    console.error('Error deleting orders by user:', error);
+    res.sendStatus(500);
+  }
 }
+};
+
