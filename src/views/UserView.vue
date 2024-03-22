@@ -68,7 +68,7 @@
   font-weight: 30px;
   color: red;
   width: max-content;
-  margin-left: 32%;
+  margin-left: 35%;
 }
 
 .background {
@@ -161,5 +161,21 @@
 .btn:active {
   filter: brightness(0.7);
   transform: scale(0.98);
+}
+@media (max-width: 576px) {
+  .card {
+  margin-left: 20%;
+}
+.list-group, .list-group-item{
+  margin-left: 12%;
+}
+}
+@media (max-width: 340px) {
+  .card {
+  margin-left: 10%;
+}
+.list-group, .list-group-item{
+  margin-left: 3%;
+}
 }
 </style>

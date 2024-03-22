@@ -1,9 +1,9 @@
 <!-- Inside your CartView component template -->
 <template>
   <div>
-    <h2>Your Cart</h2>
+    <h2 class="display-5 text-center pt-5">Your Cart</h2>
 
-    <table class="cart-table">
+    <table class="cart-table container">
       <thead>
         <tr>
           <th>Order ID</th>

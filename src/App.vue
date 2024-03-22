@@ -1,7 +1,7 @@
 <template>
+  <Spinner v-if="loading" />
   <div id="app">
     <Navbar />
-    <Spinner v-if="loading" />
     <router-view />
   </div>
   <footercomp />
@@ -10,7 +10,7 @@
 <script>
   import Navbar from './components/navComp.vue';
   import Spinner from './components/SpinnerComp.vue';
-    import footercomp from './components/footerComp.vue';
+  import footercomp from './components/footerComp.vue';
   export default {
   components:{
        Navbar,

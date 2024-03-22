@@ -106,7 +106,7 @@ Enquires about this policy can be directed to our information officer here siyam
     
         <!-- Navbar links -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <router-link class="nav-link" to="/products">Men</router-link>
             </li>
@@ -115,6 +115,21 @@ Enquires about this policy can be directed to our information officer here siyam
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/products">Kids</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/Profile">Profile</router-link>
+            </li>
+          </ul> -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- Category buttons -->
+            <li class="nav-item">
+              <router-link to="/products" @click="selectCategory('Men')" class="nav-link btn btn-link">Men</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/products" @click="selectCategory('women')" class="nav-link btn btn-link">Women</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/products" @click="selectCategory('kids')" class="nav-link btn btn-link">Kids</router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" to="/Profile">Profile</router-link>
@@ -140,8 +155,12 @@ export default {
     logout() {
       // Logout action
       this.$store.dispatch('logout');
+    },
+    selectCategory(category) {
+      // Update selected category
+      this.$store.commit('updateSelectedCategory', category);
     }
-  }
+  },
 };
 </script>
 

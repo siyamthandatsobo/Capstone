@@ -112,6 +112,7 @@ footer {
   position: relative;
   width: 100%;
   bottom: 1;
+  padding-top:30px;
 }
 
 .footer-line {

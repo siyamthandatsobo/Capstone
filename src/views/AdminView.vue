@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div class="container">
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="userModalTarget">
             Add User
@@ -293,7 +293,8 @@ export default {
     selectedUser: null,
     selectedProduct: null,
     userModalTarget: '#userModal',
-    productModalTarget: '#productModal'
+    productModalTarget: '#productModal',
+    selectedOrder: null
 
 
   };
@@ -384,6 +385,22 @@ export default {
 
     deleteUser(userID) {
       this.$store.dispatch("deleteUser", userID);
+    },
+    deleteOrder(orderID) {
+      this.$store.dispatch("deleteOrder", orderID);
+    },
+    editOrder(order) {
+      // Set selectedOrder to the clicked order
+      this.selectedOrder = { ...order };
+
+      // Open the order modal
+      $('#orderModal').modal('show');
+    },
+
+    updateOrder() {
+      // Perform update operation using this.selectedOrder
+      // Close the modal after updating
+      $('#orderModal').modal('hide');
     },
   }, 
 

@@ -6,8 +6,8 @@ import sweet from 'sweetalert';
 import VueCookies from 'vue-cookies';
 
 // Set up Axios configurations
-axios.defaults.withCredentials = true;
 const baseUrl = 'https://capstone-opj5.onrender.com';
+axios.defaults.withCredentials = true;
 
 export default createStore({
   state: {
@@ -17,6 +17,7 @@ export default createStore({
     product: null,
     cart: [],
     Cart:[],
+    selectedCategory: '', 
     
     productQuantity: 1,
     searchQuery: '',
@@ -58,6 +59,7 @@ export default createStore({
     },
     setToken(state, token) {
       state.token = token;
+      console.log(token)
     },
     setUserCookie(state, user) {
       VueCookies.set('user', JSON.stringify(user)); // Set user information in cookie
@@ -68,6 +70,9 @@ export default createStore({
       if (userCookie) {
         state.user = JSON.parse(userCookie);
       }
+    },
+    updateSelectedCategory(state, category) {
+      state.selectedCategory = category;
     },
   },
   actions: {
@@ -192,18 +197,21 @@ export default createStore({
         const { token, user } = data; // Extract token and user information from response data
   
         // Save token and user information in Vuex state
+        VueCookies.set('jwt', token);
         context.commit('setToken', token);
         VueCookies.set('setUserCookie', JSON.stringify(user));
   
         // Save token and user information in cookies
-        VueCookies.set('jwt', token);
-        VueCookies.set('userRole', user.userRole);
+ // Set cookie expiration as needed
+    VueCookies.set('userRole', user.userRole);
         VueCookies.set('userID', user.userID);
         VueCookies.set('user', JSON.stringify(user));
 
   
         // Show success message using SweetAlert
         sweet('Success', data.msg, 'success');
+        window.location.reload(); // You might want to update the state instead of reloading the entire page
+  
   
         await router.push('/'); // Navigate to home page
       } catch (error) {
@@ -237,6 +245,7 @@ export default createStore({
         VueCookies.remove('jwt'); // Remove JWT token from cookie
         VueCookies.remove('userID'); // Remove user information from cookie
         VueCookies.remove('userRole'); // Remove userRole information from cookie
+        VueCookies.remove('setUserCookie'); // Remove userRole information from cookie
   
         // Clear token and user information from Vuex state
         context.commit('setToken', null);
@@ -319,6 +328,28 @@ async addUser({ commit }, newuser) {
   } catch (error) {
     console.error('Error adding User:', error);
     sweet('Error', 'Failed to add User', 'error');
+  }
+},
+async deleteOrder({ commit }, orderID) {
+  try {
+    await axios.delete(`${baseUrl}/order/${orderID}`);
+    sweet('Success', 'Order deleted successfully!', 'success');
+    window.location.reload(); // You might want to update the state instead of reloading the entire page
+  } catch (error) {
+    console.error('Error deleting order:', error);
+    sweet('Error', 'Failed to delete order', 'error');
+  }
+},
+
+async editOrderQuantity({ commit }, { quantity, orderID }) {
+  try {
+    const response = await axios.patch(`${baseUrl}/order/${orderID}`, { quantity });
+    console.log(response.data); // Log the response if needed
+    sweet('Success', 'Order quantity updated successfully!', 'success');
+    // You might want to update the state to reflect the new quantity
+  } catch (error) {
+    console.error('Error editing order quantity:', error);
+    sweet('Error', 'Failed to update order quantity', 'error');
   }
 }
 },

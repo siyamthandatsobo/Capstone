@@ -1,8 +1,8 @@
 <template>
-<div class="background">
+<div class="background  ">
     <h1 class="text-center text-white">Have any Concern?</h1>
     <h4 class="text-center text-white">Reach out us</h4>
-    <div class="container">
+    <div class="container-contact container">
         <div class="left">
             <form class="form">
                 <div class="input-block">
@@ -73,7 +73,7 @@
 </div>
 </template>
 <style scoped>
-.container {
+.container-contact {
   display: flex;
   width: 520px;
   height: 500px;
@@ -86,6 +86,7 @@
   border-radius: 15px;
   box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.03);
   border: 0.1px solid rgba(128, 128, 128, 0.178);
+  padding-bottom:30px;
 }
 
 .left {
